@@ -8,7 +8,7 @@ public class MockServerSocket extends ServerSocket {
     }
 
     public Socket accept() {
-        return new Socket();
+        return new MockSocket("Test");
     }
 
 }

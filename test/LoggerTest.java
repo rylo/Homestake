@@ -8,7 +8,6 @@ import java.io.PrintStream;
 import static junit.framework.Assert.assertEquals;
 
 public class LoggerTest {
-
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
 
