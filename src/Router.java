@@ -1,7 +1,10 @@
+import java.io.InputStream;
+
 public class Router {
 
-    public ServerResponse routeRequest(String request) {
+    public InputStream routeRequest(String request) {
         String requestType = parseRequestType(request);
+        System.out.println("Routing request: " + request);
 
         if (requestType.equals("GET")) {
             return buildGetResponse(parseRoute(request));
@@ -25,18 +28,18 @@ public class Router {
         return requestType;
     }
 
-    public ServerResponse buildGetResponse(String requestRoute) {
-        FileChecker fileChecker = new FileChecker();
-        System.out.println(requestRoute);
+    public InputStream buildGetResponse(String requestRoute) {
+        String rootDirectory = "public";
+        FileChecker fileChecker = new FileChecker(rootDirectory);
 
-        if (fileChecker.directoryExists("", requestRoute)) {
-            return new DirectoryResponse(requestRoute);
+        if (fileChecker.directoryExists(requestRoute)) {
+            return new DirectoryResponse(rootDirectory, requestRoute).response();
         }
         else if (fileChecker.fileExists(requestRoute)) {
-            return new FileResponse(requestRoute);
+            return new FileResponse(rootDirectory, requestRoute).response();
         }
         else {
-            return null;
+            return new FileResponse(rootDirectory, "/500.html").response();
         }
 
     }

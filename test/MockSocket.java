@@ -1,13 +1,14 @@
 import java.io.*;
 import java.net.*;
+import java.nio.charset.Charset;
 
 public class MockSocket extends Socket {
     private boolean closed = false;
     InputStream input;
     OutputStream output;
 
-    public MockSocket(String input) {
-        this.input = new ByteArrayInputStream(input.getBytes());
+    public MockSocket(String mockInput) {
+        this.input = new ByteArrayInputStream(mockInput.getBytes());
         output = new ByteArrayOutputStream();
     }
 

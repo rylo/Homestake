@@ -1,24 +1,16 @@
 import java.io.File;
 
 public class FileChecker {
+    public String rootDirectory;
 
-    public boolean directoryExists(String directory) {
-        directory = directory.substring(1);
-        boolean exists = fileExists(directory);
-
-        if (exists & new File(directory).isDirectory()) {
-            return true;
-        }
-        else {
-            return false;
-        }
+    public FileChecker(String rootDirectory) {
+        this.rootDirectory = rootDirectory;
     }
 
-    public boolean directoryExists(String rootDirectory, String directory) {
-        String fullDirectoryPath = rootDirectory + directory;
-        boolean exists = fileExists(fullDirectoryPath);
+    public boolean directoryExists(String directory) {
+        boolean exists = fileExists(directory);
 
-        if (exists & new File(fullDirectoryPath).isDirectory()) {
+        if (exists & new File(rootDirectory + directory).isDirectory()) {
             return true;
         }
         else {
@@ -27,11 +19,6 @@ public class FileChecker {
     }
 
     public boolean fileExists(String directory) {
-        File file = new File(directory);
-        return file.exists();
-    }
-
-    public boolean fileExists(String rootDirectory, String directory) {
         File file = new File(rootDirectory + directory);
         return file.exists();
     }

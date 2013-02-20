@@ -1,6 +1,5 @@
 import java.io.*;
 import java.net.Socket;
-import java.util.Scanner;
 
 public class Homestake {
     private SocketWrapper socketWrapper = new SocketWrapper(5000);
@@ -19,22 +18,26 @@ public class Homestake {
         Socket server = socketWrapper.accept();
 
         while(!server.isClosed()) {
-            scanInput(server, server.getInputStream());
+            InputStream response = getResponse(server);
+            sendResponse(server, response);
+            server.close();
             server = socketWrapper.accept();
         }
     }
 
-    public String scanInput(Socket server, InputStream inputStream) throws IOException {
-        BufferedReader in = new BufferedReader(new InputStreamReader(server.getInputStream()));
-        String string;
-        while ((string = in.readLine()) != null) {
-            System.out.println(string);
-            if (string.isEmpty()) {
-                break;
-            }
+    public InputStream getResponse(Socket server) throws IOException {
+        BufferedReader clientRequest = new BufferedReader(new InputStreamReader(server.getInputStream()), 10000);
+        return new Router().routeRequest(clientRequest.readLine());
+    }
+
+    public void sendResponse(Socket server, InputStream response) throws IOException {
+        OutputStream out = server.getOutputStream();
+        int line;
+
+        while((line = response.read()) != -1) {
+            out.write(line);
         }
-        Scanner scanner = new Scanner(inputStream);
-        return scanner.hasNext() ? scanner.next() : "";
+        out.flush();
     }
 
 }
