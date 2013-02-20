@@ -18,10 +18,6 @@ public class SocketWrapper {
         }
     }
 
-    public boolean isClosed () {
-        return closed;
-    }
-
     public SocketWrapper(int port, Logger logger) {
         this.port = port;
         this.logger = logger;
@@ -37,6 +33,10 @@ public class SocketWrapper {
         this.port = port;
         this.serverSocket = serverSocket;
         this.logger = logger;
+    }
+
+    public boolean isClosed () {
+        return closed;
     }
 
     public Socket accept() {

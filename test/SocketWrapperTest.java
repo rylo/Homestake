@@ -65,9 +65,10 @@ public class SocketWrapperTest {
     public void serverAcceptsConnections() throws Exception {
         SocketWrapper serverSocket = new SocketWrapper(9876, logger, mockServerSocket);
         Socket server = serverSocket.accept();
-        assertFalse(server.isClosed());
-        InputStreamReader inputStreamReader = new InputStreamReader(server.getInputStream(), "US-ASCII");
 
+        assertFalse(server.isClosed());
+
+        InputStreamReader inputStreamReader = new InputStreamReader(server.getInputStream(), "US-ASCII");
         int readInteger = inputStreamReader.read();
         char character = (char) readInteger;
         String string = String.valueOf(character);
