@@ -1,6 +1,5 @@
 import java.io.*;
 import java.net.*;
-import java.nio.charset.Charset;
 
 public class MockSocket extends Socket {
     private boolean closed = false;

@@ -13,7 +13,20 @@ public class SocketWrapperTest {
     @Before
     public void initialize() throws IOException {
         logger = new Logger();
-        mockServerSocket = new MockServerSocket();
+        mockServerSocket = new MockServerSocket("Test");
+    }
+
+    public String responseString(InputStream inputStream) throws IOException {
+        InputStreamReader input = new InputStreamReader(inputStream);
+        int integer;
+        char character;
+        String response = "";
+
+        while((integer = input.read()) != -1) {
+            character = (char) integer;
+            response += String.valueOf(character);
+        }
+        return response;
     }
 
     @Test
@@ -68,12 +81,9 @@ public class SocketWrapperTest {
 
         assertFalse(server.isClosed());
 
-        InputStreamReader inputStreamReader = new InputStreamReader(server.getInputStream(), "US-ASCII");
-        int readInteger = inputStreamReader.read();
-        char character = (char) readInteger;
-        String string = String.valueOf(character);
+        String response = responseString(server.getInputStream());
 
-        assertEquals("T", string);
+        assertEquals("Test", response);
     }
 
 }

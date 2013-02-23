@@ -1,6 +1,4 @@
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 
 public class DirectoryResponse extends ServerResponse {
@@ -12,11 +10,13 @@ public class DirectoryResponse extends ServerResponse {
         this.requestRoute = requestRoute;
     }
 
-    public InputStream response() {
-        String responseBody = formatList(getDirectoryContents());
-        responseBody = HTMLWrap(responseBody);
-        InputStream inputStream = new ByteArrayInputStream(responseBody.getBytes());
-        return inputStream;
+    public InputStream response() throws IOException {
+        String responseBody = HTMLWrap(formatList(getDirectoryContents()));
+
+        ByteArrayInputStream body = new ByteArrayInputStream(responseBody.getBytes());
+        ByteArrayInputStream header = new ByteArrayInputStream(generateDirectoryHeader().getBytes());
+
+        return new SequenceInputStream(header, body);
     }
 
     public ArrayList<String> getDirectoryContents() {
@@ -32,7 +32,7 @@ public class DirectoryResponse extends ServerResponse {
         String formattedList = "<ul>";
 
         for(String filename : fileList) {
-            formattedList += "<li>" + filename + "</li>\n";
+            formattedList += "<li><a href=\"" + requestRoute + filename + "\">" + filename + "</a></li>\n";
         }
 
         formattedList += "</ul>";

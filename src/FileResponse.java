@@ -1,5 +1,4 @@
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.*;
 
 public class FileResponse extends ServerResponse {
     String rootDirectory;
@@ -12,10 +11,17 @@ public class FileResponse extends ServerResponse {
 
     public InputStream response() {
         try {
-            return new FileInputStream(rootDirectory + requestRoute);
+            ByteArrayInputStream header = new ByteArrayInputStream(generateFileHeader(rootDirectory + requestRoute).getBytes());
+            FileInputStream fileInputStream = new FileInputStream(rootDirectory + requestRoute);
+
+            return new SequenceInputStream(header, fileInputStream);
+        }
+        catch (FileNotFoundException exception) {
+            return new ErrorResponse(404).response();
         }
         catch (Exception exception) {
-            return null;
+            exception.printStackTrace();
+            return new ErrorResponse(500).response();
         }
     }
 

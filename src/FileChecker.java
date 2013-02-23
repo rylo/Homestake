@@ -1,7 +1,7 @@
 import java.io.File;
 
 public class FileChecker {
-    public String rootDirectory;
+    private String rootDirectory;
 
     public FileChecker(String rootDirectory) {
         this.rootDirectory = rootDirectory;

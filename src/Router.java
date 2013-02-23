@@ -1,34 +1,20 @@
+import java.io.IOException;
 import java.io.InputStream;
 
 public class Router {
 
-    public InputStream routeRequest(String request) {
-        String requestType = parseRequestType(request);
-        System.out.println("Routing request: " + request);
+    public InputStream routeRequest(String request) throws IOException {
+        RequestParser requestParser = new RequestParser(request);
 
-        if (requestType.equals("GET")) {
-            return buildGetResponse(parseRoute(request));
+        if (requestParser.type().equals("GET")) {
+            return getResponse(requestParser.route());
         }
         else {
-            return null;
+            return new ErrorResponse(500).response();
         }
     }
 
-    public String parseRoute(String request) {
-        String lines[] = request.split("\\r?\\n");
-        String[] header = lines[0].split(" ");
-        String route = header[1];
-        return route;
-    }
-
-    public String parseRequestType(String request) {
-        String lines[] = request.split("\\r?\\n");
-        String[] header = lines[0].split(" ");
-        String requestType = header[0];
-        return requestType;
-    }
-
-    public InputStream buildGetResponse(String requestRoute) {
+    public InputStream getResponse(String requestRoute) throws IOException {
         String rootDirectory = "public";
         FileChecker fileChecker = new FileChecker(rootDirectory);
 
@@ -39,7 +25,7 @@ public class Router {
             return new FileResponse(rootDirectory, requestRoute).response();
         }
         else {
-            return new FileResponse(rootDirectory, "/500.html").response();
+            return new ErrorResponse(404).response();
         }
 
     }
