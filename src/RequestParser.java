@@ -8,9 +8,9 @@ public class RequestParser {
     }
 
     public String route() {
-        String lines[] = request.split("\\r?\\n");
-        String[] header = lines[0].split(" ");
-        String route = header[1];
+        String route = rawRoute();
+        route = route.split("\\?")[0];
+
         if( !route.equals("/") ) {
             route += "/";
         }
@@ -21,20 +21,37 @@ public class RequestParser {
         String lines[] = request.split("\\r?\\n");
         String[] header = lines[0].split(" ");
         String requestType = header[0];
+
         return requestType;
     }
 
     public Hashtable queryStrings() {
-        String[] rawQueryStrings = route().split("\\?");
-        Hashtable<String, String> queryStringHash = new Hashtable<String, String>();
+        if (queryStringPresent()) {
+        String route = rawRoute();
+        String rawQueryStrings = route.split("\\?")[1];
+        String[] queryStrings = rawQueryStrings.split("&");
 
-        for(String string : rawQueryStrings) {
+        Hashtable<String, String> queryStringHash = new Hashtable<String, String>();
+        for(String string : queryStrings) {
             if(string.contains("=")) {
                 String[] queryString = string.split("=");
                 queryStringHash.put(queryString[0], queryString[1]);
             }
         }
         return queryStringHash;
+        } else {
+            return new Hashtable<String, String>();
+        }
+    }
+
+    public String rawRoute() {
+        String lines[] = request.split("\\r?\\n");
+        String[] header = lines[0].split(" ");
+        return header[1];
+    }
+
+    public boolean queryStringPresent() {
+        return (rawRoute().split("\\?").length > 1);
     }
 
 }

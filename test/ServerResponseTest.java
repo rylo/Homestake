@@ -26,6 +26,7 @@ public class ServerResponseTest {
         assertEquals("HTTP/1.1 201 Created\n", serverResponse.generateStatus(201));
         assertEquals("HTTP/1.1 404 Not Found\n", serverResponse.generateStatus(404));
         assertEquals("HTTP/1.1 500 Internal Server Error\n", serverResponse.generateStatus(500));
+        assertEquals("HTTP/1.1 302 Found\n", serverResponse.generateStatus(302));
     }
 
     @Test

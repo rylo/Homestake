@@ -40,6 +40,8 @@ public class ServerResponse {
                       break;
             case 201: response = "Created";
                       break;
+            case 302: response = "Found";
+                      break;
             case 404: response = "Not Found";
                       break;
             case 500: response = "Internal Server Error";

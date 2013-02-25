@@ -7,19 +7,23 @@ public class Router {
         RequestParser requestParser = new RequestParser(request);
 
         if (requestParser.type().equals("GET")) {
-            return getResponse(requestParser.route());
+            return getResponse(requestParser);
+        }
+        else if (requestParser.type().equals("PUT")) {
+            return getResponse(requestParser);
         }
         else {
             return new ErrorResponse(500).response();
         }
     }
 
-    public InputStream getResponse(String requestRoute) throws IOException {
+    public InputStream getResponse(RequestParser requestParser) throws IOException {
+        String requestRoute = requestParser.route();
         String rootDirectory = "public";
         FileChecker fileChecker = new FileChecker(rootDirectory);
 
-        if (requestRoute.equals("/some-script-url/")) {
-            return new ErrorResponse(200).response();
+        if (requestRoute.contains("/some-script-url/") || requestRoute.contains("/form/")) {
+            return new QueryStringResponse(requestParser).response();
         }
         else if (fileChecker.directoryExists(requestRoute)) {
             return new DirectoryResponse(rootDirectory, requestRoute).response();
