@@ -19,6 +19,10 @@ public class ServerResponse {
         return generateStatus(errorCode);
     }
 
+    public String generateRedirectHeader(String path, String redirectPath) throws IOException {
+        return generateStatus(302) + generateLocation(redirectPath) + "Content-type: text/plain; charset=UTF-8\n" + generateContentLength(path) + "\n";
+    }
+
     public String generateContentType(String filePath) throws IOException {
         InputStream inputStream = new BufferedInputStream(new FileInputStream(filePath));
         String contentType = URLConnection.guessContentTypeFromStream(inputStream);
@@ -30,6 +34,10 @@ public class ServerResponse {
         }
 
         return "Content-Type: " + contentType + "\n";
+    }
+
+    public String generateLocation(String redirectLocation) {
+        return "Location: http://localhost:5000" + redirectLocation + "\n";
     }
 
     public String generateStatus(int statusCode) {

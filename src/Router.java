@@ -28,6 +28,9 @@ public class Router {
         if (requestRoute.contains("/some-script-url/") || requestRoute.contains("/form/")) {
             return new QueryStringResponse(requestParser).response();
         }
+        else if ( requestRoute.contains("/redirect/") ) {
+            return new RedirectResponse(requestParser.route(), "/").response();
+        }
         else if (fileChecker.directoryExists(requestRoute)) {
             return new DirectoryResponse(rootDirectory, requestRoute).response();
         }
@@ -35,9 +38,8 @@ public class Router {
             return new FileResponse(rootDirectory, requestRoute).response();
         }
         else {
-            return new  StatusCodeResponse(404).response();
+            return new StatusCodeResponse(404).response();
         }
-
     }
 
 }

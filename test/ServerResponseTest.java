@@ -47,6 +47,12 @@ public class ServerResponseTest {
     }
 
     @Test
+    public void testGenerateRedirectHeader() throws IOException {
+        String testHeader = "HTTP/1.1 302 Found\n" + "Location: http://localhost:5000/\n" + "Content-type: text/plain; charset=UTF-8\n" + "Content-length: 0\n\n";
+        assertEquals(testHeader, serverResponse.generateRedirectHeader("/redirect/", "/"));
+    }
+
+    @Test
     public void testGenerateServer() {
         assertEquals("Server: HomestakeServer/0.01\n", serverResponse.generateServerHeader());
     }
@@ -54,6 +60,11 @@ public class ServerResponseTest {
     @Test
     public void testGenerateContentLength() {
         assertEquals("Content-length: 747083\n", serverResponse.generateContentLength("public/image/test.gif"));
+    }
+
+    @Test
+    public void testGenerateLocation() {
+        assertEquals("Location: http://localhost:5000/\n", serverResponse.generateLocation("/"));
     }
 
 }
