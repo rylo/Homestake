@@ -25,7 +25,7 @@ public class RequestParserTest {
         requestParser = new RequestParser(request);
         assertEquals("/", requestParser.route());
         assertTrue("/" != requestParser.route());
-        assertEquals("GET", requestParser.type());
+        assertEquals("GET", requestParser.method());
     }
 
     @Test

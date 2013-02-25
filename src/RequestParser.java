@@ -17,7 +17,7 @@ public class RequestParser {
         return route;
     }
 
-    public String type() {
+    public String method() {
         String lines[] = request.split("\\r?\\n");
         String[] header = lines[0].split(" ");
         String requestType = header[0];

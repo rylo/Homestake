@@ -6,14 +6,17 @@ public class Router {
     public InputStream routeRequest(String request) throws IOException {
         RequestParser requestParser = new RequestParser(request);
 
-        if (requestParser.type().equals("GET")) {
+        if (requestParser.method().equals("GET")) {
             return getResponse(requestParser);
         }
-        else if (requestParser.type().equals("PUT")) {
+        else if (requestParser.method().equals("PUT")) {
             return getResponse(requestParser);
+        }
+        else if (requestParser.method().equals("POST")){
+            return new StatusCodeResponse(200).response();
         }
         else {
-            return new ErrorResponse(500).response();
+            return new StatusCodeResponse(500).response();
         }
     }
 
@@ -32,7 +35,7 @@ public class Router {
             return new FileResponse(rootDirectory, requestRoute).response();
         }
         else {
-            return new ErrorResponse(404).response();
+            return new  StatusCodeResponse(404).response();
         }
 
     }

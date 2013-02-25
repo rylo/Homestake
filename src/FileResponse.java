@@ -17,11 +17,11 @@ public class FileResponse extends ServerResponse {
             return new SequenceInputStream(header, fileInputStream);
         }
         catch (FileNotFoundException exception) {
-            return new ErrorResponse(404).response();
+            return new StatusCodeResponse(404).response();
         }
         catch (Exception exception) {
             exception.printStackTrace();
-            return new ErrorResponse(500).response();
+            return new StatusCodeResponse(500).response();
         }
     }
 
