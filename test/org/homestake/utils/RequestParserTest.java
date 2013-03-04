@@ -1,3 +1,6 @@
+package org.homestake.utils;
+
+import org.homestake.utils.RequestParser;
 import org.junit.Test;
 
 import java.util.Hashtable;

@@ -1,3 +1,7 @@
+package org.homestake;
+
+import org.homestake.utils.Logger;
+import org.homestake.utils.SocketWrapper;
 import org.junit.Before;
 import org.junit.Test;
 import static junit.framework.Assert.*;

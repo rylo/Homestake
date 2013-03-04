@@ -1,3 +1,5 @@
+package org.homestake.response;
+
 import java.io.*;
 import java.net.URLConnection;
 

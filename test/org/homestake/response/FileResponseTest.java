@@ -1,3 +1,6 @@
+package org.homestake.response;
+
+import org.homestake.SpecHelper;
 import org.junit.Test;
 
 import java.io.IOException;

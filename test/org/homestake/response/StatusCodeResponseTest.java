@@ -1,3 +1,6 @@
+package org.homestake.response;
+
+import org.homestake.SpecHelper;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -13,7 +16,7 @@ public class StatusCodeResponseTest {
         statusCode = 500;
         statusCodeResponse = new StatusCodeResponse(statusCode);
 
-        assertEquals("StatusCodeResponse", statusCodeResponse.getClass().getName());
+        assertEquals("org.homestake.response.StatusCodeResponse", statusCodeResponse.getClass().getName());
     }
 
     @Test

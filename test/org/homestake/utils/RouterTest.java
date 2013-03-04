@@ -1,3 +1,6 @@
+package org.homestake.utils;
+
+import org.homestake.SpecHelper;
 import org.junit.Test;
 import static junit.framework.Assert.*;
 import java.io.IOException;

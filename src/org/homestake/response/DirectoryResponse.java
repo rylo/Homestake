@@ -1,3 +1,7 @@
+package org.homestake.response;
+
+import org.homestake.response.ServerResponse;
+
 import java.io.*;
 import java.util.ArrayList;
 

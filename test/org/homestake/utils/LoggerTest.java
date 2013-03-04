@@ -1,7 +1,6 @@
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+package org.homestake.utils;
 
+import org.junit.*;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
@@ -26,7 +25,7 @@ public class LoggerTest {
     @Test
     public void testLoggerConstructor() {
         Logger logger = new Logger();
-        assertEquals("Logger", logger.getClass().getName());
+        assertEquals("org.homestake.utils.Logger", logger.getClass().getName());
     }
 
     @Test

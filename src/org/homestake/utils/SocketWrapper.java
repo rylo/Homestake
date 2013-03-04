@@ -1,3 +1,7 @@
+package org.homestake.utils;
+
+import org.homestake.utils.Logger;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;

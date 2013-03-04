@@ -1,3 +1,6 @@
+package org.homestake.utils;
+
+import org.homestake.utils.FileChecker;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertFalse;

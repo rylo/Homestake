@@ -1,3 +1,5 @@
+package org.homestake.utils;
+
 import java.util.Hashtable;
 
 public class RequestParser {

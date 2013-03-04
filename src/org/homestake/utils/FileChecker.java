@@ -1,3 +1,5 @@
+package org.homestake.utils;
+
 import java.io.File;
 
 public class FileChecker {

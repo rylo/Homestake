@@ -1,3 +1,7 @@
+package org.homestake.response;
+
+import org.homestake.SpecHelper;
+import org.homestake.utils.RequestParser;
 import org.junit.Test;
 import static junit.framework.Assert.*;
 

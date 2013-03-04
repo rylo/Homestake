@@ -1,3 +1,7 @@
+package org.homestake.response;
+
+import org.homestake.response.ServerResponse;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;

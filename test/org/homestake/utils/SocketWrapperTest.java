@@ -1,3 +1,8 @@
+package org.homestake.utils;
+
+import org.homestake.MockServerSocket;
+import org.homestake.utils.Logger;
+import org.homestake.utils.SocketWrapper;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,7 +38,7 @@ public class SocketWrapperTest {
     public void testAccept() throws IOException {
         SocketWrapper socketWrapper = new SocketWrapper(7473, logger, mockServerSocket);
         Socket server = socketWrapper.accept();
-        assertEquals("MockSocket", server.getClass().getName()); // This isn't testing much - figure out how to REALLY test a socket?
+        assertEquals("org.homestake.MockSocket", server.getClass().getName()); // This isn't testing much - figure out how to REALLY test a socket?
     }
 
     @Test

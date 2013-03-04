@@ -1,3 +1,6 @@
+package org.homestake.response;
+
+import org.homestake.response.ServerResponse;
 import org.junit.Test;
 
 import java.io.IOException;
