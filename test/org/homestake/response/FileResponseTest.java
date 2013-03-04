@@ -15,8 +15,6 @@ public class FileResponseTest {
         requestRoute = "/rylan/index.html";
         FileResponse fileResponse = new FileResponse(rootDirectory, requestRoute);
 
-        assertEquals(rootDirectory, fileResponse.rootDirectory);
-        assertEquals(requestRoute, fileResponse.requestRoute);
         assertEquals("java.io.SequenceInputStream", fileResponse.response().getClass().getName());
     }
 

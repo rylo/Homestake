@@ -24,8 +24,10 @@ public class HeaderBuilder {
     public String generateContentType(String filePath) throws IOException {
         InputStream inputStream = new BufferedInputStream(new FileInputStream(filePath));
         String contentType = URLConnection.guessContentTypeFromStream(inputStream);
-        if (contentType == null) { contentType = "text/plain"; }
-        inputStream.close();
+
+        if (contentType == null) {
+            contentType = "text/plain";
+        }
 
         if(!contentType.contains("image")) {
             contentType += "; charset=UTF-8";

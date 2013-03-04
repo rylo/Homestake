@@ -1,7 +1,5 @@
 package org.homestake.response;
 
-import org.homestake.response.ServerResponse;
-
 import java.io.*;
 import java.util.ArrayList;
 
@@ -17,8 +15,8 @@ public class DirectoryResponse extends ServerResponse {
     public InputStream response() throws IOException {
         String responseBody = HTMLWrap(formatList(getDirectoryContents()));
 
-        ByteArrayInputStream body = new ByteArrayInputStream(responseBody.getBytes());
-        ByteArrayInputStream header = new ByteArrayInputStream(headerBuilder.generateDirectoryHeader().getBytes());
+        body = new ByteArrayInputStream(responseBody.getBytes());
+        header = new ByteArrayInputStream(headerBuilder.generateDirectoryHeader().getBytes());
 
         return new SequenceInputStream(header, body);
     }

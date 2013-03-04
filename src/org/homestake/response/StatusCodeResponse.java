@@ -5,16 +5,17 @@ import java.io.InputStream;
 import java.io.SequenceInputStream;
 
 public class StatusCodeResponse extends ServerResponse {
-    private int errorCode;
+    private int code;
 
-    public StatusCodeResponse(int errorCode) {
-        this.errorCode = errorCode;
+    public StatusCodeResponse(int code) {
+        this.code = code;
     }
 
     public InputStream response() {
-        String htmlResponse = HTMLWrap("<h1>Error code: " + Integer.toString(errorCode) + "</h1>");
-        ByteArrayInputStream body = new ByteArrayInputStream(htmlResponse.getBytes());
-        ByteArrayInputStream header = new ByteArrayInputStream(headerBuilder.generateErrorHeader(errorCode).getBytes());
+        String responseBody = HTMLWrap("<h1>Error code: " + Integer.toString(code) + "</h1>");
+
+        body = new ByteArrayInputStream(responseBody.getBytes());
+        header = new ByteArrayInputStream(headerBuilder.generateErrorHeader(code).getBytes());
 
         return new SequenceInputStream(header, body);
     }

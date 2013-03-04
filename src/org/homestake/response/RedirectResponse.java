@@ -15,8 +15,11 @@ public class RedirectResponse extends ServerResponse {
     }
 
     public InputStream response() throws IOException {
-        ByteArrayInputStream body = new ByteArrayInputStream(" ".getBytes());
-        ByteArrayInputStream header = new ByteArrayInputStream(headerBuilder.generateRedirectHeader(requestPath, redirectPath).getBytes());
+        String responseBody = "";
+
+        body = new ByteArrayInputStream(responseBody.getBytes());
+        header = new ByteArrayInputStream(headerBuilder.generateRedirectHeader(requestPath, redirectPath).getBytes());
+
         return new SequenceInputStream(header, body);
     }
 }

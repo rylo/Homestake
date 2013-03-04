@@ -1,7 +1,11 @@
 package org.homestake.response;
 
+import java.io.InputStream;
+
 public class ServerResponse {
-    public HeaderBuilder headerBuilder;
+    protected HeaderBuilder headerBuilder;
+    protected InputStream header;
+    protected InputStream body;
 
     public ServerResponse() {
         this.headerBuilder = new HeaderBuilder();
