@@ -14,7 +14,7 @@ public class QueryStringResponse extends ServerResponse {
     }
 
     public InputStream response() throws IOException {
-        ByteArrayInputStream header = new ByteArrayInputStream(generateDirectoryHeader().getBytes());
+        ByteArrayInputStream header = new ByteArrayInputStream(headerBuilder.generateDirectoryHeader().getBytes());
         ByteArrayInputStream body = new ByteArrayInputStream(queryStringPrinter(requestParser.queryStrings()).getBytes());
         return new SequenceInputStream(header, body);
     }

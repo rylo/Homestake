@@ -13,7 +13,7 @@ public class FileResponse extends ServerResponse {
 
     public InputStream response() {
         try {
-            ByteArrayInputStream header = new ByteArrayInputStream(generateFileHeader(rootDirectory + requestRoute).getBytes());
+            ByteArrayInputStream header = new ByteArrayInputStream(headerBuilder.generateFileHeader(rootDirectory + requestRoute).getBytes());
             FileInputStream fileInputStream = new FileInputStream(rootDirectory + requestRoute);
 
             return new SequenceInputStream(header, fileInputStream);

@@ -1,7 +1,5 @@
 package org.homestake.response;
 
-import org.homestake.response.ServerResponse;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,8 +15,8 @@ public class RedirectResponse extends ServerResponse {
     }
 
     public InputStream response() throws IOException {
-        ByteArrayInputStream body = new ByteArrayInputStream("STUFF".getBytes());
-        ByteArrayInputStream header = new ByteArrayInputStream(generateRedirectHeader(requestPath, redirectPath).getBytes());
+        ByteArrayInputStream body = new ByteArrayInputStream(" ".getBytes());
+        ByteArrayInputStream header = new ByteArrayInputStream(headerBuilder.generateRedirectHeader(requestPath, redirectPath).getBytes());
         return new SequenceInputStream(header, body);
     }
 }

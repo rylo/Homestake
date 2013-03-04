@@ -1,11 +1,9 @@
 package org.homestake.response;
 
 import org.homestake.SpecHelper;
-import org.junit.Test;
-
-import java.io.IOException;
-
 import static junit.framework.Assert.*;
+import org.junit.Test;
+import java.io.IOException;
 
 public class FileResponseTest {
     String rootDirectory;

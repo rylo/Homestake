@@ -18,7 +18,7 @@ public class DirectoryResponse extends ServerResponse {
         String responseBody = HTMLWrap(formatList(getDirectoryContents()));
 
         ByteArrayInputStream body = new ByteArrayInputStream(responseBody.getBytes());
-        ByteArrayInputStream header = new ByteArrayInputStream(generateDirectoryHeader().getBytes());
+        ByteArrayInputStream header = new ByteArrayInputStream(headerBuilder.generateDirectoryHeader().getBytes());
 
         return new SequenceInputStream(header, body);
     }

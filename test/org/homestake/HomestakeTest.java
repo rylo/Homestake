@@ -5,7 +5,6 @@ import org.homestake.utils.SocketWrapper;
 import org.junit.Before;
 import org.junit.Test;
 import static junit.framework.Assert.*;
-
 import java.io.*;
 
 public class HomestakeTest {
@@ -48,6 +47,12 @@ public class HomestakeTest {
     public void testStartServer() throws IOException {
         //homestake.startServer();
         //HOW DO I TEST THIS?! :(
+    }
+
+    @Test
+    public void testMain() throws IOException {
+        //homestake.main();
+        //Should I test this?
     }
 
 }
