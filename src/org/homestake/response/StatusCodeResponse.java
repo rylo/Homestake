@@ -21,6 +21,7 @@ public class StatusCodeResponse extends ServerResponse {
     public HashMap<String, Object> headerValues() {
         HashMap<String, Object> hash = new HashMap<String, Object>();
             hash.put("status", code);
+            hash.put("content-type", "text/html");
             hash.put("content-length", new Long(responseBody.length()));
         return hash;
     }

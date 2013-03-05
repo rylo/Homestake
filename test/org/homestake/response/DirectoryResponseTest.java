@@ -23,6 +23,7 @@ public class DirectoryResponseTest {
             files.add("file1");
             files.add("index.html");
             files.add("sample.mp4");
+            files.add("sample.pdf");
             files.add("test.mp3");
 
         assertEquals(files, directoryResponse.getDirectoryContents());

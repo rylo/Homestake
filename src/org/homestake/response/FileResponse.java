@@ -1,5 +1,7 @@
 package org.homestake.response;
 
+import org.homestake.utils.FileChecker;
+
 import java.io.*;
 import java.net.URLConnection;
 import java.util.HashMap;
@@ -27,17 +29,12 @@ public class FileResponse extends ServerResponse {
         }
     }
 
-    public String generateFileMimeType() throws IOException {
-        InputStream inputStream = new BufferedInputStream(new FileInputStream(filePath));
-        String contentType = URLConnection.guessContentTypeFromStream(inputStream);
-
-        return contentType;
-    }
-
     public HashMap<String, Object> headerValues() throws IOException {
+        FileChecker fileChecker = new FileChecker("public");
+
         HashMap<String, Object> hash = new HashMap<String, Object>();
             hash.put("status", 200);
-            hash.put("content-type", generateFileMimeType());
+            hash.put("content-type", fileChecker.generateFileMimeType(filePath));
             hash.put("content-length", new File(filePath).length());
         return hash;
     }

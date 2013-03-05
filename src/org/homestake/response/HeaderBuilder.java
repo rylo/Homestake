@@ -40,8 +40,7 @@ public class HeaderBuilder {
 
     public String generateDate() {
         DateFormat dateFormat = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss zz");
-        Date date = new Date();
-        return "Date: " + dateFormat.format(date) + newline;
+        return "Date: " + dateFormat.format(new Date()) + newline;
     }
 
     public String generateServerHeader() {
@@ -50,7 +49,7 @@ public class HeaderBuilder {
 
     public String generateContentType(String contentType) {
         if (contentType == null) { contentType = "text/plain"; }
-        if(!contentType.contains("image")) { contentType += "; charset=UTF-8"; }
+        if(contentType.contains("text")) { contentType += "; charset=UTF-8"; }
 
         return "Content-Type: " + contentType + newline;
     }

@@ -9,6 +9,7 @@ import static junit.framework.Assert.*;
 public class RequestParserTest {
     RequestParser requestParser;
     String request;
+    String route;
 
     @Test
     public void testRoute() {
@@ -19,6 +20,10 @@ public class RequestParserTest {
         request = "GET /rylan HTTP/1.1\nHost: localhost:5000\nConnection: keep-alive\nCache-Control: max-age=0\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\nUser-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.57 Safari/537.17\nAccept-Encoding: gzip,deflate,sdch\nAccept-Language: en-US,en;q=0.8\nAccept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.3";
         requestParser = new RequestParser(request);
         assertEquals("/rylan/", requestParser.route());
+
+        request = "GET /rylan/index.html HTTP/1.1\nHost: localhost:5000\nConnection: keep-alive\nCache-Control: max-age=0\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\nUser-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.57 Safari/537.17\nAccept-Encoding: gzip,deflate,sdch\nAccept-Language: en-US,en;q=0.8\nAccept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.3";
+        requestParser = new RequestParser(request);
+        assertEquals("/rylan/index.html", requestParser.route());
     }
 
     @Test
@@ -71,6 +76,22 @@ public class RequestParserTest {
         assertEquals("GET", requestParser.header()[0]);
         assertEquals("/", requestParser.header()[1]);
         assertEquals("HTTP/1.1", requestParser.header()[2]);
+    }
+
+    @Test
+    public void testHasTrailingSlash() {
+        requestParser = new RequestParser("");
+
+        assertTrue(requestParser.hasTrailingSlash("/rylan/"));
+        assertFalse(requestParser.hasTrailingSlash("/index.html"));
+    }
+
+    @Test
+    public void testHasFileExtension() {
+        requestParser = new RequestParser("");
+
+        assertFalse(requestParser.hasFileExtension("/rylan/"));
+        assertTrue(requestParser.hasFileExtension("/index.html"));
     }
 
 }

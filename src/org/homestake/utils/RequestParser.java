@@ -12,11 +12,21 @@ public class RequestParser {
     public String route() {
         String route = rawRoute();
         route = route.split("\\?")[0];
-
-        if( !route.equals("/") ) {
-            route += "/";
+        if( hasTrailingSlash(route) || hasFileExtension(route)) {
+            return route;
         }
-        return route;
+        else {
+            return route + "/";
+        }
+    }
+
+    public boolean hasFileExtension(String filePath) {
+        int charactersAfterPeriod = (filePath.length() - 1) - filePath.lastIndexOf(".");
+        return charactersAfterPeriod >= 2 && charactersAfterPeriod <= 4;
+    }
+
+    public boolean hasTrailingSlash(String filePath) {
+        return filePath.lastIndexOf("/") == filePath.length() - 1;
     }
 
     public String rawRoute() {

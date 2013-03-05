@@ -29,18 +29,23 @@ public class Homestake {
     }
 
     public void startServer() throws IOException {
-        Socket server = socket.accept();
 
-        while(!server.isClosed()) {
-            try {
-                sendResponse(server, getServerResponse(server));
-                server.close();
-            }
-            catch (Exception exception) {
-                exception.printStackTrace();
-            }
-            server = socket.accept();
+        while(true) {
+            final Socket clientConnection = socket.accept();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        sendResponse(clientConnection, getServerResponse(clientConnection));
+                        clientConnection.close();
+                    }
+                    catch (Exception exception) {
+                        exception.printStackTrace();
+                    }
+                }
+            }, "homestake-response-thread").start();
         }
+
     }
 
     public InputStream getServerResponse(Socket server) throws IOException {
@@ -63,6 +68,10 @@ public class Homestake {
             }
         }
         bufferedOutputStream.close();
+    }
+
+    public int getResponseThreadCount() {
+        return (Thread.getAllStackTraces().keySet().size() - 5);
     }
 
 }

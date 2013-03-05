@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 public class FileResponseTest {
+    private SpecHelper specHelper =  new SpecHelper();
 
     @Test
     public void testConstructor() throws IOException {
@@ -18,7 +19,6 @@ public class FileResponseTest {
     @Test
     public void testNotFoundResponse() throws IOException {
         FileResponse fileResponse = new FileResponse("public", "/asdfa;sdl0asdfa-d=f-23kjfansasdf");
-        SpecHelper specHelper =  new SpecHelper();
         String response = specHelper.responseString(fileResponse.response());
 
         assertTrue(response.contains("404") && response.contains("Not Found"));

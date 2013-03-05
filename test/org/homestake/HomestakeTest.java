@@ -55,4 +55,22 @@ public class HomestakeTest {
         //Should I test this?
     }
 
+    @Test
+    public void testGetThreadCount() throws IOException {
+        assertEquals(0, homestake.getResponseThreadCount());
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    homestake.startServer();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, "homestake-thread").start();
+
+        assertTrue(homestake.getResponseThreadCount() > 0);
+    }
+
 }
