@@ -1,8 +1,7 @@
 package org.homestake.response;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.SequenceInputStream;
+import java.io.*;
+import java.util.HashMap;
 
 public class StatusCodeResponse extends ServerResponse {
     private int code;
@@ -11,13 +10,19 @@ public class StatusCodeResponse extends ServerResponse {
         this.code = code;
     }
 
-    public InputStream response() {
-        String responseBody = HTMLWrap("<h1>Error code: " + Integer.toString(code) + "</h1>");
-
+    public InputStream response() throws IOException {
+        setResponseBody(HTMLWrap("<h1>Error code: " + Integer.toString(code) + "</h1>"));
         body = new ByteArrayInputStream(responseBody.getBytes());
-        header = new ByteArrayInputStream(headerBuilder.generateErrorHeader(code).getBytes());
+        header = new ByteArrayInputStream(headerBuilder.build(headerValues()).getBytes());
 
         return new SequenceInputStream(header, body);
+    }
+
+    public HashMap<String, Object> headerValues() {
+        HashMap<String, Object> hash = new HashMap<String, Object>();
+            hash.put("status", code);
+            hash.put("content-length", new Long(responseBody.length()));
+        return hash;
     }
 
 }

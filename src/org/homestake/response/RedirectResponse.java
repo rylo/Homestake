@@ -1,25 +1,28 @@
 package org.homestake.response;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.SequenceInputStream;
+import java.io.*;
+import java.util.HashMap;
 
 public class RedirectResponse extends ServerResponse {
-    private String requestPath;
     private String redirectPath;
 
-    public RedirectResponse(String requestPath, String redirectPath) {
-        this.requestPath = requestPath;
+    public RedirectResponse(String redirectPath) {
         this.redirectPath = redirectPath;
     }
 
     public InputStream response() throws IOException {
-        String responseBody = "";
-
+        setResponseBody("");
         body = new ByteArrayInputStream(responseBody.getBytes());
-        header = new ByteArrayInputStream(headerBuilder.generateRedirectHeader(requestPath, redirectPath).getBytes());
+        header = new ByteArrayInputStream(headerBuilder.build(headerValues()).getBytes());
 
         return new SequenceInputStream(header, body);
+    }
+
+    public HashMap<String, Object> headerValues() {
+        HashMap<String, Object> hash = new HashMap<String, Object>();
+            hash.put("status", 302);
+            hash.put("content-length", new Long(responseBody.length()));
+            hash.put("location", redirectPath);
+        return hash;
     }
 }

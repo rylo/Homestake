@@ -2,10 +2,11 @@ package org.homestake.response;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DirectoryResponse extends ServerResponse {
-    String rootDirectory;
-    String requestRoute;
+    private String rootDirectory;
+    private String requestRoute;
 
     public DirectoryResponse(String rootDirectory, String requestRoute) {
         this.rootDirectory = rootDirectory;
@@ -13,10 +14,9 @@ public class DirectoryResponse extends ServerResponse {
     }
 
     public InputStream response() throws IOException {
-        String responseBody = HTMLWrap(formatList(getDirectoryContents()));
-
+        setResponseBody(HTMLWrap(formatList(getDirectoryContents())));
         body = new ByteArrayInputStream(responseBody.getBytes());
-        header = new ByteArrayInputStream(headerBuilder.generateDirectoryHeader().getBytes());
+        header = new ByteArrayInputStream(headerBuilder.build(headerValues()).getBytes());
 
         return new SequenceInputStream(header, body);
     }
@@ -39,6 +39,14 @@ public class DirectoryResponse extends ServerResponse {
 
         formattedList += "</ul>";
         return formattedList;
+    }
+
+    public HashMap<String, Object> headerValues() {
+        HashMap<String, Object> hash = new HashMap<String, Object>();
+            hash.put("status", 200);
+            hash.put("content-type", "text/html");
+            hash.put("content-length", new Long(responseBody.length()));
+        return hash;
     }
 
 }

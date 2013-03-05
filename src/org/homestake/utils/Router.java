@@ -32,7 +32,7 @@ public class Router {
             return new QueryStringResponse(requestParser).response();
         }
         else if (requestRoute.contains("/redirect/")) {
-            return new RedirectResponse(requestParser.route(), "/").response();
+            return new RedirectResponse("/").response();
         }
         else if (fileChecker.directoryExists(requestRoute)) {
             return new DirectoryResponse(rootDirectory, requestRoute).response();

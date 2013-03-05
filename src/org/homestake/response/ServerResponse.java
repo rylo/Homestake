@@ -4,11 +4,16 @@ import java.io.InputStream;
 
 public class ServerResponse {
     protected HeaderBuilder headerBuilder;
-    protected InputStream header;
+    protected String responseBody;
     protected InputStream body;
+    protected InputStream header;
 
-    public ServerResponse() {
+    protected ServerResponse() {
         this.headerBuilder = new HeaderBuilder();
+    }
+
+    public void setResponseBody(String responseBody) {
+        this.responseBody = responseBody;
     }
 
     public String HTMLWrap(String body) {

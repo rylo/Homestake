@@ -6,14 +6,14 @@ import java.io.*;
 import java.net.Socket;
 
 public class Homestake {
-    private SocketWrapper socketWrapper;
+    private SocketWrapper socket;
 
     public Homestake() {
-        this.socketWrapper = new SocketWrapper(5000);
+        this.socket = new SocketWrapper(5000);
     }
 
     public Homestake(SocketWrapper socketWrapper) {
-        this.socketWrapper = socketWrapper;
+        this.socket = socketWrapper;
     }
 
     public static void main(String[] args) {
@@ -23,17 +23,23 @@ public class Homestake {
         }
         catch (Exception exception) {
             System.out.println("Server stopped. Exception found: " + exception);
-            System.out.println("Stack trace: " + exception.getStackTrace().toString());
+            System.out.println("Stack trace: ");
+                exception.printStackTrace();
         }
     }
 
     public void startServer() throws IOException {
-        Socket server = socketWrapper.accept();
+        Socket server = socket.accept();
 
         while(!server.isClosed()) {
-            sendResponse(server, getServerResponse(server));
-            server.close();
-            server = socketWrapper.accept();
+            try {
+                sendResponse(server, getServerResponse(server));
+                server.close();
+            }
+            catch (Exception exception) {
+                exception.printStackTrace();
+            }
+            server = socket.accept();
         }
     }
 

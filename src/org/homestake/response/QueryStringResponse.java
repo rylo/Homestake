@@ -4,6 +4,7 @@ import org.homestake.utils.RequestParser;
 import java.io.*;
 import java.net.URLDecoder;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Hashtable;
 
 public class QueryStringResponse extends ServerResponse {
@@ -14,10 +15,9 @@ public class QueryStringResponse extends ServerResponse {
     }
 
     public InputStream response() throws IOException {
-        String responseBody = queryStringPrinter(requestParser.queryStrings());
-
-        header = new ByteArrayInputStream(headerBuilder.generateDirectoryHeader().getBytes());
+        setResponseBody(queryStringPrinter(requestParser.queryStrings()));
         body = new ByteArrayInputStream(responseBody.getBytes());
+        header = new ByteArrayInputStream(headerBuilder.build(headerValues()).getBytes());
 
         return new SequenceInputStream(header, body);
     }
@@ -36,6 +36,14 @@ public class QueryStringResponse extends ServerResponse {
 
     public String decodeParameter(String string) throws UnsupportedEncodingException {
         return URLDecoder.decode(string, "UTF-8");
+    }
+
+    public HashMap<String, Object> headerValues() {
+        HashMap<String, Object> headerValues = new HashMap<String, Object>();
+            headerValues.put("status", 200);
+            headerValues.put("content-type", "text/plain");
+            headerValues.put("content-length", new Long(responseBody.length()));
+        return headerValues;
     }
 
 }

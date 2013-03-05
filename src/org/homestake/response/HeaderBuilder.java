@@ -1,48 +1,28 @@
 package org.homestake.response;
 
 import java.io.*;
-import java.net.URLConnection;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 
 public class HeaderBuilder {
+    private String newline = "\r\n";
 
-    public String generateFileHeader(String filePath) throws IOException {
-        return generateStatus(200) + generateContentType(filePath) + generateContentLength(filePath) + "\n";
-    }
+    public String build(HashMap<String, Object> headerValues) throws IOException {
+        String response = "";
+        response += generateStatus( (Integer) headerValues.get("status") );
+        response += generateDate();
+        response += generateServerHeader();
+        response += generateContentType( (String) headerValues.get("content-type") );
+        response += generateContentLength( (Long) headerValues.get("content-length") );
+        response += generateLocation( (String) headerValues.get("location") );
 
-    public String generateDirectoryHeader() throws IOException {
-        return generateStatus(200) + "\n";
-    }
-
-    public String generateErrorHeader(int errorCode) {
-        return generateStatus(errorCode);
-    }
-
-    public String generateRedirectHeader(String path, String redirectPath) throws IOException {
-        return generateStatus(302) + generateLocation(redirectPath) + "Content-type: text/plain; charset=UTF-8\n" + generateContentLength(path) + "\n";
-    }
-
-    public String generateContentType(String filePath) throws IOException {
-        InputStream inputStream = new BufferedInputStream(new FileInputStream(filePath));
-        String contentType = URLConnection.guessContentTypeFromStream(inputStream);
-
-        if (contentType == null) {
-            contentType = "text/plain";
-        }
-
-        if(!contentType.contains("image")) {
-            contentType += "; charset=UTF-8";
-        }
-
-        return "Content-Type: " + contentType + "\n";
-    }
-
-    public String generateLocation(String redirectLocation) {
-        return "Location: http://localhost:5000" + redirectLocation + "\n";
+        return response + newline;
     }
 
     public String generateStatus(int statusCode) {
         String response = "";
-
         switch (statusCode) {
             case 200: response = "OK";
                 break;
@@ -55,17 +35,37 @@ public class HeaderBuilder {
             case 500: response = "Internal Server Error";
                 break;
         }
+        return "HTTP/1.1 " + Integer.toString(statusCode) + " " + response + newline;
+    }
 
-        return "HTTP/1.1 " + Integer.toString(statusCode) + " " + response + "\n";
+    public String generateDate() {
+        DateFormat dateFormat = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss zz");
+        Date date = new Date();
+        return "Date: " + dateFormat.format(date) + newline;
     }
 
     public String generateServerHeader() {
-        return "Server: HomestakeServer/0.01\n";
+        return "Server: HomestakeServer/0.01" + newline;
     }
 
-    public String generateContentLength(String filePath) {
-        Long contentLength = new File(filePath).length();
-        return "Content-length: " + Long.toString(contentLength) + "\n";
+    public String generateContentType(String contentType) {
+        if (contentType == null) { contentType = "text/plain"; }
+        if(!contentType.contains("image")) { contentType += "; charset=UTF-8"; }
+
+        return "Content-Type: " + contentType + newline;
+    }
+
+    public String generateContentLength(Long size) {
+        return "Content-length: " + Long.toString(size) + newline;
+    }
+
+    public String generateLocation(String redirectLocation) {
+        if (redirectLocation == null) {
+            return "";
+        }
+        else {
+            return "Location: http://localhost:5000" + redirectLocation + newline;
+        }
     }
 
 }

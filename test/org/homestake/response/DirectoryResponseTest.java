@@ -1,12 +1,11 @@
 package org.homestake.response;
 
-import org.homestake.response.DirectoryResponse;
 import org.junit.Test;
+import static junit.framework.Assert.assertEquals;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
-import static junit.framework.Assert.*;
+import java.util.HashMap;
 
 public class DirectoryResponseTest {
     String requestRoute = "/rylan/";
@@ -23,6 +22,8 @@ public class DirectoryResponseTest {
             files.add(".DS_Store");
             files.add("file1");
             files.add("index.html");
+            files.add("sample.mp4");
+            files.add("test.mp3");
 
         assertEquals(files, directoryResponse.getDirectoryContents());
     }
@@ -49,5 +50,17 @@ public class DirectoryResponseTest {
 
         assertEquals("<ul><li><a href=\"/index.html\">index.html</a></li>\n<li><a href=\"/test_directory/\">test_directory/</a></li>\n</ul>", directoryResponse.formatList(files2));
 
+    }
+
+    @Test
+    public void testRequiredHeaders() {
+        DirectoryResponse directoryResponse = new DirectoryResponse("public", "/rylan/");
+        String responseBody = "<html><head></head><body>STUFF</body></html>";
+        directoryResponse.setResponseBody(responseBody);
+        HashMap<String, Object> headers = directoryResponse.headerValues();
+
+        assertEquals(200, headers.get("status"));
+        assertEquals(new Long(responseBody.length()), headers.get("content-length"));
+        assertEquals("text/html", headers.get("content-type"));
     }
 }

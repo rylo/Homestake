@@ -7,6 +7,7 @@ import static junit.framework.Assert.*;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 
 public class QueryStringResponseTest {
     SpecHelper specHelper = new SpecHelper();
@@ -34,6 +35,17 @@ public class QueryStringResponseTest {
         RequestParser requestParser = new RequestParser(request);
         String response = queryStringResponse.queryStringPrinter(requestParser.queryStrings());
         assertTrue(response.contains("variable_1 = Operators <, >, =, !=; +, -, *, &, @, #, $, [, ]: \"is that all\"?"));
+    }
+
+    @Test
+    public void testHeaderValues() {
+        QueryStringResponse queryStringResponse = new QueryStringResponse(requestParser);
+        String responseBody = "<html><head></head><body>STUFF</body></html>";
+        queryStringResponse.setResponseBody(responseBody);
+        HashMap<String, Object> headers = queryStringResponse.headerValues();
+
+        assertEquals(200, headers.get("status"));
+        assertEquals(new Long(responseBody.length()), headers.get("content-length"));
     }
 
 }
