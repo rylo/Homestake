@@ -1,5 +1,7 @@
 package org.homestake.utils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Hashtable;
 
 public class RequestParser {
@@ -18,6 +20,10 @@ public class RequestParser {
         else {
             return route + "/";
         }
+    }
+
+    public String decode(String string) throws UnsupportedEncodingException {
+        return URLDecoder.decode(string, "UTF-8");
     }
 
     public boolean hasFileExtension(String filePath) {

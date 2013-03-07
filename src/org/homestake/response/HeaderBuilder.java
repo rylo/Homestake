@@ -30,6 +30,8 @@ public class HeaderBuilder {
                 break;
             case 302: response = "Found";
                 break;
+            case 400: response = "Bad Request";
+                break;
             case 404: response = "Not Found";
                 break;
             case 500: response = "Internal Server Error";
@@ -49,7 +51,7 @@ public class HeaderBuilder {
 
     public String generateContentType(String contentType) {
         if (contentType == null) { contentType = "text/plain"; }
-        if(contentType.contains("text")) { contentType += "; charset=UTF-8"; }
+        if (contentType.contains("text")) { contentType += "; charset=UTF-8"; }
 
         return "Content-Type: " + contentType + newline;
     }

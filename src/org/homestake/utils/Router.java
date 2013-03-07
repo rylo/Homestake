@@ -5,27 +5,28 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class Router {
+    private String rootDirectory;
+
+    public Router(String rootDirectory) {
+        this.rootDirectory = rootDirectory;
+    }
 
     public InputStream routeRequest(String requestString) throws IOException {
         RequestParser request = new RequestParser(requestString);
 
-        if (request.method().equals("GET")) {
-            return getResponse(request);
-        }
-        else if (request.method().equals("PUT")) {
+        if (request.method().equals("GET") || request.method().equals("PUT")) {
             return getResponse(request);
         }
         else if (request.method().equals("POST")){
             return new StatusCodeResponse(200).response();
         }
         else {
-            return new StatusCodeResponse(500).response();
+            return new StatusCodeResponse(400).response();
         }
     }
 
     public InputStream getResponse(RequestParser requestParser) throws IOException {
         String requestRoute = requestParser.route();
-        String rootDirectory = "public";
         FileChecker fileChecker = new FileChecker(rootDirectory);
 
         if (requestRoute.contains("/some-script-url/") || requestRoute.contains("/form/")) {

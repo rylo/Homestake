@@ -29,13 +29,9 @@ public class QueryStringResponse extends ServerResponse {
             String key = queryStringEnumerator.nextElement();
             String value = queryStrings.get(key);
 
-            response += decodeParameter(key) + " = " + decodeParameter(value) + "\n";
+            response += requestParser.decode(key) + " = " + requestParser.decode(value) + "\n";
         }
         return response;
-    }
-
-    public String decodeParameter(String string) throws UnsupportedEncodingException {
-        return URLDecoder.decode(string, "UTF-8");
     }
 
     public HashMap<String, Object> headerValues() {

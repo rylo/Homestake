@@ -5,6 +5,8 @@ import org.homestake.utils.SocketWrapper;
 import org.junit.Before;
 import org.junit.Test;
 import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+
 import java.io.*;
 
 public class HomestakeTest {
@@ -14,9 +16,23 @@ public class HomestakeTest {
     String mockRequest;
     MockSocket mockSocket;
 
+    public void waitForThreads(Homestake homestake, String threadName, int maxIterations) throws InterruptedException {
+        int iterations = 0;
+        int threadCount = 0;
+        while(threadCount == 0) {
+            if(iterations >= maxIterations) {
+                throw new RuntimeException("Error: No threads named " + threadName + " started.");
+            } else {
+                iterations ++;
+                Thread.sleep(1);
+                threadCount = homestake.getThreadCount(threadName);
+            }
+        }
+    }
+
     @Before
     public void initialize() throws IOException {
-        mockRequest = "GET /rylan/index.html HTTP/1.1\nHost: localhost:5000\nConnection: keep-alive\nCache-Control: max-age=0\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\nUser-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.57 Safari/537.17\nAccept-Encoding: gzip,deflate,sdch\nAccept-Language: en-US,en;q=0.8\nAccept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.3";
+        mockRequest = "GET /rylan/index.html HTTP/1.1\n...";
         Logger logger = new Logger();
         mockServerSocket = new MockServerSocket(mockRequest);
         socketWrapper = new SocketWrapper(5000, logger, mockServerSocket);
@@ -44,21 +60,36 @@ public class HomestakeTest {
     }
 
     @Test
-    public void testStartServer() throws IOException {
-        //homestake.startServer();
-        //HOW DO I TEST THIS?! :(
+    public void testDefaults() {
+        assertEquals("public", homestake.rootDirectory);
+        assertEquals(5000, homestake.port);
     }
 
     @Test
-    public void testMain() throws IOException {
-        //homestake.main();
-        //Should I test this?
+    public void testMain() throws IOException, InterruptedException {
+        final String rootDirectoryArgument = "/Users/rylan/IdeaProjects/Homestake/public";
+        final String portArgument = "5050";
+        final Homestake homestake1 = new Homestake(socketWrapper);
+
+        // Start the server in a thread to avoid blocking.
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                homestake1.main(new String[]{"-p", portArgument, "-root", rootDirectoryArgument});
+            }
+        }, "homestake-thread").start();
+
+        waitForThreads(homestake1, "homestake-thread", 100);
+
+        assertEquals(rootDirectoryArgument, homestake1.rootDirectory);
+        assertEquals(Integer.parseInt(portArgument), homestake1.port);
     }
 
     @Test
-    public void testGetThreadCount() throws IOException {
-        assertEquals(0, homestake.getResponseThreadCount());
+    public void testGetResponseThreadCount() throws IOException, InterruptedException {
+        assertEquals(0, homestake.getThreadCount("homestake-response-thread"));
 
+        // Start the server in a thread to avoid blocking.
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -70,7 +101,9 @@ public class HomestakeTest {
             }
         }, "homestake-thread").start();
 
-        assertTrue(homestake.getResponseThreadCount() > 0);
+        waitForThreads(homestake, "homestake-thread", 100);
+
+        assertTrue(homestake.getThreadCount("homestake-response-thread") > 0);
     }
 
 }
