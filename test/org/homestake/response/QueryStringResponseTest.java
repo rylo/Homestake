@@ -10,9 +10,13 @@ import static junit.framework.Assert.*;
 
 public class QueryStringResponseTest {
     SpecHelper specHelper = new SpecHelper();
-    String request = "GET /some-script-url?pirate=pegleg&ninja=shuriken HTTP/1.1\nHost: localhost:5000\n";
+    String request = "GET /some-script-url?pirate=pegleg&ninja=shuriken HTTP/1.1\nHost: localhost:5000\n...";
     RequestParser requestParser = new RequestParser(request);
-    QueryStringResponse queryStringResponse = new QueryStringResponse(requestParser);
+    QueryStringResponse queryStringResponse;
+
+    public QueryStringResponseTest() throws UnsupportedEncodingException {
+        queryStringResponse = new QueryStringResponse(requestParser);
+    }
 
     @Test
     public void testResponse() throws IOException {
@@ -38,7 +42,6 @@ public class QueryStringResponseTest {
 
     @Test
     public void testHeaderValues() {
-        QueryStringResponse queryStringResponse = new QueryStringResponse(requestParser);
         String responseBody = "<html><head></head><body>STUFF</body></html>";
         queryStringResponse.setResponseBody(responseBody);
         HashMap<String, Object> headers = queryStringResponse.headerValues();

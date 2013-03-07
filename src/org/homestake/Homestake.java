@@ -53,8 +53,7 @@ public class Homestake {
                 @Override
                 public void run() {
                     try {
-                        sendResponse(clientConnection, getServerResponse(clientConnection));
-
+                        sendResponses(clientConnection, getServerResponse(clientConnection));
                         clientConnection.close();
                     }
                     catch (Exception exception) {
@@ -71,15 +70,15 @@ public class Homestake {
         return new Router(rootDirectory).routeRequest(clientRequest.readLine());
     }
 
-    public void sendResponse(Socket server, HashMap<String, InputStream> response) throws IOException {
-        BufferedOutputStream out = prepareOutputStream(server.getOutputStream());
+    public void sendResponses(Socket server, HashMap<String, InputStream> response) throws IOException {
+        BufferedOutputStream outputStream = prepareOutputStream(server.getOutputStream());
         for(Map.Entry<String, InputStream> entry : response.entrySet()) {
-            writeResponse(server, out, entry.getValue());
+            writeResponseToSocket(server, outputStream, entry.getValue());
         }
-        out.close();
+        outputStream.close();
     }
 
-    public void writeResponse(Socket server, BufferedOutputStream out, InputStream in) throws IOException {
+    public void writeResponseToSocket(Socket server, BufferedOutputStream out, InputStream in) throws IOException {
         BufferedInputStream bufferedInputStream = new BufferedInputStream(in);
         int line;
         while((line = bufferedInputStream.read()) != -1 && !server.isClosed()) {

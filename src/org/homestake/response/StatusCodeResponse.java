@@ -1,6 +1,5 @@
 package org.homestake.response;
 
-import java.io.*;
 import java.util.HashMap;
 
 public class StatusCodeResponse extends ServerResponse {
@@ -8,19 +7,10 @@ public class StatusCodeResponse extends ServerResponse {
 
     public StatusCodeResponse(int code) {
         this.code = code;
-    }
-
-    public HashMap<String, InputStream> response() throws IOException {
         setResponseBody(HTMLWrap("<h1>Error code: " + Integer.toString(code) + "</h1>"));
-        body = new ByteArrayInputStream(responseBody.getBytes());
-        mappedResponse.put("default-body", body);
-
-        header = new ByteArrayInputStream(headerBuilder.build(headerValues()).getBytes());
-        mappedResponse.put("default-header", header);
-
-        return mappedResponse;
     }
 
+    @Override
     public HashMap<String, Object> headerValues() {
         HashMap<String, Object> hash = new HashMap<String, Object>();
             hash.put("status", code);
@@ -28,5 +18,4 @@ public class StatusCodeResponse extends ServerResponse {
             hash.put("content-length", new Long(responseBody.length()));
         return hash;
     }
-
 }

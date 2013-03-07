@@ -31,6 +31,7 @@ public class FileResponse extends ServerResponse {
         }
     }
 
+    @Override
     public HashMap<String, Object> headerValues() throws IOException {
         FileChecker fileChecker = new FileChecker("public");
 

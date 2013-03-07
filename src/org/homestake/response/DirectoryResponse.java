@@ -11,17 +11,7 @@ public class DirectoryResponse extends ServerResponse {
     public DirectoryResponse(String rootDirectory, String requestRoute) {
         this.rootDirectory = rootDirectory;
         this.requestRoute = requestRoute;
-    }
-
-    public HashMap<String, InputStream> response() throws IOException {
         setResponseBody(HTMLWrap(formatList(getDirectoryContents())));
-        body = new ByteArrayInputStream(responseBody.getBytes());
-        mappedResponse.put("default-body", body);
-
-        header = new ByteArrayInputStream(headerBuilder.build(headerValues()).getBytes());
-        mappedResponse.put("default-header", header);
-
-        return mappedResponse;
     }
 
     public ArrayList<String> getDirectoryContents() {
@@ -44,6 +34,7 @@ public class DirectoryResponse extends ServerResponse {
         return formattedList;
     }
 
+    @Override
     public HashMap<String, Object> headerValues() {
         HashMap<String, Object> hash = new HashMap<String, Object>();
             hash.put("status", 200);

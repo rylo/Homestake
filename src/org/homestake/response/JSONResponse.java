@@ -22,7 +22,7 @@ public class JSONResponse extends ServerResponse {
         return mappedResponse;
     }
 
-    public HashMap<String, Object> headerValues() throws IOException {
+    public HashMap<String, Object> headerValues() {
         HashMap<String, Object> hash = new HashMap<String, Object>();
             hash.put("status", 200);
             hash.put("content-type", "application/json");

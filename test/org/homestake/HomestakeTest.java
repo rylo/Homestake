@@ -55,7 +55,7 @@ public class HomestakeTest {
 
     @Test
     public void testSendResponse() throws IOException {
-        homestake.sendResponse(mockSocket, homestake.getServerResponse(mockSocket));
+        homestake.sendResponses(mockSocket, homestake.getServerResponse(mockSocket));
         OutputStream outputStream = mockSocket.getOutputStream();
         assertTrue(outputStream.toString().contains("<h1>O hi!</h1>\n"));
     }

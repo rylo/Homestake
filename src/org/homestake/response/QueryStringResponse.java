@@ -9,19 +9,9 @@ import java.util.Hashtable;
 public class QueryStringResponse extends ServerResponse {
     private RequestParser requestParser;
 
-    public QueryStringResponse(RequestParser requestParser) {
+    public QueryStringResponse(RequestParser requestParser) throws UnsupportedEncodingException {
         this.requestParser = requestParser;
-    }
-
-    public HashMap<String, InputStream> response() throws IOException {
         setResponseBody(queryStringPrinter(requestParser.queryStrings()));
-        body = new ByteArrayInputStream(responseBody.getBytes());
-        mappedResponse.put("default-body", body);
-
-        header = new ByteArrayInputStream(headerBuilder.build(headerValues()).getBytes());
-        mappedResponse.put("default-header", header);
-
-        return mappedResponse;
     }
 
     public String queryStringPrinter(Hashtable<String, String> queryStrings) throws UnsupportedEncodingException {
@@ -36,6 +26,7 @@ public class QueryStringResponse extends ServerResponse {
         return response;
     }
 
+    @Override
     public HashMap<String, Object> headerValues() {
         HashMap<String, Object> headerValues = new HashMap<String, Object>();
             headerValues.put("status", 200);
