@@ -3,7 +3,6 @@ package org.homestake.response;
 import org.homestake.utils.FileChecker;
 
 import java.io.*;
-import java.net.URLConnection;
 import java.util.HashMap;
 
 public class FileResponse extends ServerResponse {
@@ -13,12 +12,15 @@ public class FileResponse extends ServerResponse {
         this.filePath = rootDirectory + requestRoute;
     }
 
-    public InputStream response() throws IOException {
+    public HashMap<String, InputStream> response() throws IOException {
         try {
             body = new FileInputStream(filePath);
-            header = new ByteArrayInputStream(headerBuilder.build(headerValues()).getBytes());
+            mappedResponse.put("default-body", body);
 
-            return new SequenceInputStream(header, body);
+            header = new ByteArrayInputStream(headerBuilder.build(headerValues()).getBytes());
+            mappedResponse.put("default-header", header);
+
+            return mappedResponse;
         }
         catch (FileNotFoundException exception) {
             return new StatusCodeResponse(404).response();

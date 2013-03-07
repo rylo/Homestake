@@ -10,6 +10,7 @@ import static junit.framework.Assert.assertEquals;
 import java.io.*;
 
 public class HomestakeTest {
+    static int threadCount;
     MockServerSocket mockServerSocket;
     SocketWrapper socketWrapper;
     Homestake homestake;
@@ -18,14 +19,14 @@ public class HomestakeTest {
 
     public void waitForThreads(Homestake homestake, String threadName, int maxIterations) throws InterruptedException {
         int iterations = 0;
-        int threadCount = 0;
+        this.threadCount = 0;
         while(threadCount == 0) {
             if(iterations >= maxIterations) {
                 throw new RuntimeException("Error: No threads named " + threadName + " started.");
             } else {
                 iterations ++;
                 Thread.sleep(1);
-                threadCount = homestake.getThreadCount(threadName);
+                this.threadCount = homestake.getThreadCount(threadName);
             }
         }
     }
@@ -48,7 +49,7 @@ public class HomestakeTest {
 
     @Test
     public void testGetServerResponse() throws IOException {
-        String response = new SpecHelper().responseString(homestake.getServerResponse(mockSocket));
+        String response = new SpecHelper().responseString(homestake.getServerResponse(mockSocket).get("default-body"));
         assertTrue(response.contains("<h1>O hi!</h1>\n"));
     }
 
@@ -101,9 +102,9 @@ public class HomestakeTest {
             }
         }, "homestake-thread").start();
 
-        waitForThreads(homestake, "homestake-thread", 100);
+        waitForThreads(homestake, "homestake-response-thread", 100);
 
-        assertTrue(homestake.getThreadCount("homestake-response-thread") > 0);
+        assertTrue(threadCount > 0);
     }
 
 }

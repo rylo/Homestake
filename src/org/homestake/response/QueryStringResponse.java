@@ -2,7 +2,6 @@ package org.homestake.response;
 
 import org.homestake.utils.RequestParser;
 import java.io.*;
-import java.net.URLDecoder;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -14,12 +13,15 @@ public class QueryStringResponse extends ServerResponse {
         this.requestParser = requestParser;
     }
 
-    public InputStream response() throws IOException {
+    public HashMap<String, InputStream> response() throws IOException {
         setResponseBody(queryStringPrinter(requestParser.queryStrings()));
         body = new ByteArrayInputStream(responseBody.getBytes());
-        header = new ByteArrayInputStream(headerBuilder.build(headerValues()).getBytes());
+        mappedResponse.put("default-body", body);
 
-        return new SequenceInputStream(header, body);
+        header = new ByteArrayInputStream(headerBuilder.build(headerValues()).getBytes());
+        mappedResponse.put("default-header", header);
+
+        return mappedResponse;
     }
 
     public String queryStringPrinter(Hashtable<String, String> queryStrings) throws UnsupportedEncodingException {

@@ -10,12 +10,15 @@ public class RedirectResponse extends ServerResponse {
         this.redirectPath = redirectPath;
     }
 
-    public InputStream response() throws IOException {
+    public HashMap<String, InputStream> response() throws IOException {
         setResponseBody("");
         body = new ByteArrayInputStream(responseBody.getBytes());
-        header = new ByteArrayInputStream(headerBuilder.build(headerValues()).getBytes());
+        mappedResponse.put("default-body", body);
 
-        return new SequenceInputStream(header, body);
+        header = new ByteArrayInputStream(headerBuilder.build(headerValues()).getBytes());
+        mappedResponse.put("default-header", header);
+
+        return mappedResponse;
     }
 
     public HashMap<String, Object> headerValues() {

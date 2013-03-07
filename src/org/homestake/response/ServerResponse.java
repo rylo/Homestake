@@ -1,12 +1,14 @@
 package org.homestake.response;
 
-import java.io.InputStream;
+import java.io.*;
+import java.util.HashMap;
 
 public class ServerResponse {
     protected HeaderBuilder headerBuilder;
     protected String responseBody;
     protected InputStream body;
     protected InputStream header;
+    protected HashMap<String, InputStream> mappedResponse = new HashMap<String, InputStream>();
 
     protected ServerResponse() {
         this.headerBuilder = new HeaderBuilder();

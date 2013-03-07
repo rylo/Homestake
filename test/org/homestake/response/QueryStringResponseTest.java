@@ -16,7 +16,7 @@ public class QueryStringResponseTest {
 
     @Test
     public void testResponse() throws IOException {
-        String response = specHelper.responseString(queryStringResponse.response());
+        String response = specHelper.responseString(queryStringResponse.response().get("default-body"));
         assertTrue(response.contains("pirate"));
         assertTrue(response.contains("pegleg"));
     }

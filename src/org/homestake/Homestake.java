@@ -4,6 +4,8 @@ import org.homestake.utils.Router;
 import org.homestake.utils.SocketWrapper;
 import java.io.*;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 public class Homestake {
@@ -52,6 +54,7 @@ public class Homestake {
                 public void run() {
                     try {
                         sendResponse(clientConnection, getServerResponse(clientConnection));
+
                         clientConnection.close();
                     }
                     catch (Exception exception) {
@@ -63,26 +66,34 @@ public class Homestake {
 
     }
 
-    public InputStream getServerResponse(Socket server) throws IOException {
+    public HashMap<String, InputStream> getServerResponse(Socket server) throws IOException {
         BufferedReader clientRequest = new BufferedReader(new InputStreamReader(server.getInputStream()));
         return new Router(rootDirectory).routeRequest(clientRequest.readLine());
     }
 
-    public void sendResponse(Socket server, InputStream response) throws IOException {
-        OutputStream out = server.getOutputStream();
-        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(out);
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(response);
-        int line;
+    public void sendResponse(Socket server, HashMap<String, InputStream> response) throws IOException {
+        BufferedOutputStream out = prepareOutputStream(server.getOutputStream());
+        for(Map.Entry<String, InputStream> entry : response.entrySet()) {
+            writeResponse(server, out, entry.getValue());
+        }
+        out.close();
+    }
 
+    public void writeResponse(Socket server, BufferedOutputStream out, InputStream in) throws IOException {
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(in);
+        int line;
         while((line = bufferedInputStream.read()) != -1 && !server.isClosed()) {
             try {
-                bufferedOutputStream.write(line);
+                out.write(line);
             }
             catch(Exception exception) {
                 break;
             }
         }
-        bufferedOutputStream.close();
+    }
+
+    public BufferedOutputStream prepareOutputStream(OutputStream serverOutputStream) {
+        return new BufferedOutputStream(serverOutputStream);
     }
 
     public Set getThreads() {

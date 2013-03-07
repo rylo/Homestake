@@ -3,6 +3,7 @@ package org.homestake.utils;
 import org.homestake.response.*;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 
 public class Router {
     private String rootDirectory;
@@ -11,7 +12,7 @@ public class Router {
         this.rootDirectory = rootDirectory;
     }
 
-    public InputStream routeRequest(String requestString) throws IOException {
+    public HashMap<String, InputStream> routeRequest(String requestString) throws IOException {
         RequestParser request = new RequestParser(requestString);
 
         if (request.method().equals("GET") || request.method().equals("PUT")) {
@@ -25,7 +26,7 @@ public class Router {
         }
     }
 
-    public InputStream getResponse(RequestParser requestParser) throws IOException {
+    public HashMap<String, InputStream> getResponse(RequestParser requestParser) throws IOException {
         String requestRoute = requestParser.route();
         FileChecker fileChecker = new FileChecker(rootDirectory);
 

@@ -12,18 +12,12 @@ public class StatusCodeResponseTest {
     private StatusCodeResponse statusCodeResponse;
 
     @Test
-    public void testResponseType() throws IOException {
-        statusCodeResponse = new StatusCodeResponse(500);
-        assertEquals("java.io.SequenceInputStream", statusCodeResponse.response().getClass().getName());
-    }
-
-    @Test
     public void testResponseContents() throws IOException {
         statusCodeResponse = new StatusCodeResponse(400);
-        assertTrue((specHelper.responseString(statusCodeResponse.response())).contains("400"));
+        assertTrue((specHelper.responseString(statusCodeResponse.response().get("default-header"))).contains("400"));
 
         statusCodeResponse = new StatusCodeResponse(500);
-        assertTrue((specHelper.responseString(statusCodeResponse.response())).contains("500"));
+        assertTrue((specHelper.responseString(statusCodeResponse.response().get("default-header"))).contains("500"));
     }
 
     @Test

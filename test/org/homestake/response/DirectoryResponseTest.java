@@ -12,11 +12,6 @@ public class DirectoryResponseTest {
     DirectoryResponse directoryResponse = new DirectoryResponse("public", requestRoute);
 
     @Test
-    public void responseReturnsByteArrayInputStream() throws IOException {
-        assertEquals("java.io.SequenceInputStream", directoryResponse.response().getClass().getName());
-    }
-
-    @Test
     public void returnsListOfFilesInDirectory() {
         ArrayList files = new ArrayList<String>();
             files.add(".DS_Store");

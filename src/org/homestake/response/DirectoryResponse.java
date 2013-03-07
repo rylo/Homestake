@@ -13,12 +13,15 @@ public class DirectoryResponse extends ServerResponse {
         this.requestRoute = requestRoute;
     }
 
-    public InputStream response() throws IOException {
+    public HashMap<String, InputStream> response() throws IOException {
         setResponseBody(HTMLWrap(formatList(getDirectoryContents())));
         body = new ByteArrayInputStream(responseBody.getBytes());
-        header = new ByteArrayInputStream(headerBuilder.build(headerValues()).getBytes());
+        mappedResponse.put("default-body", body);
 
-        return new SequenceInputStream(header, body);
+        header = new ByteArrayInputStream(headerBuilder.build(headerValues()).getBytes());
+        mappedResponse.put("default-header", header);
+
+        return mappedResponse;
     }
 
     public ArrayList<String> getDirectoryContents() {
