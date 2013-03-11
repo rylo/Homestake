@@ -3,7 +3,7 @@ package org.homestake.utils;
 import org.homestake.response.*;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
+import java.util.Map;
 
 public class Router {
     private String rootDirectory;
@@ -12,7 +12,7 @@ public class Router {
         this.rootDirectory = rootDirectory;
     }
 
-    public HashMap<String, InputStream> routeRequest(String requestString) throws IOException {
+    public Map<String, InputStream> routeRequest(String requestString) throws IOException {
         RequestParser request = new RequestParser(requestString);
 
         if (request.method().equals("GET") || request.method().equals("PUT")) {
@@ -26,15 +26,18 @@ public class Router {
         }
     }
 
-    public HashMap<String, InputStream> getResponse(RequestParser requestParser) throws IOException {
+    public Map<String, InputStream> getResponse(RequestParser requestParser) throws IOException {
         String requestRoute = requestParser.route();
         FileChecker fileChecker = new FileChecker(rootDirectory);
 
         if (requestRoute.contains("/some-script-url/") || requestRoute.contains("/form/")) {
             return new QueryStringResponse(requestParser).response();
         }
-        else if (requestRoute.contains("/redirect/")) {
+        else if (requestRoute.equals("/redirect/")) {
             return new RedirectResponse("/").response();
+        }
+        else if (requestRoute.equals("/api/json/")) {
+            return new JSONResponse("{\n\"JSON\" : \"Rocks!\"\n}").response();
         }
         else if (fileChecker.directoryExists(requestRoute)) {
             return new DirectoryResponse(rootDirectory, requestRoute).response();

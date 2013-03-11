@@ -49,7 +49,7 @@ public class HomestakeTest {
 
     @Test
     public void testGetServerResponse() throws IOException {
-        String response = new SpecHelper().responseString(homestake.getServerResponse(mockSocket).get("default-body"));
+        String response = new SpecHelper().responseString(homestake.getServerResponse(mockSocket).get("2-default-body"));
         assertTrue(response.contains("<h1>O hi!</h1>\n"));
     }
 
@@ -105,6 +105,17 @@ public class HomestakeTest {
         waitForThreads(homestake, "homestake-response-thread", 100);
 
         assertTrue(threadCount > 0);
+    }
+
+    @Test
+    public void testPrepareOutputStream() throws IOException {
+        OutputStream outputStream;
+
+        outputStream = homestake.setCompression("knaflskfasdf", new ByteArrayOutputStream());
+        assertEquals("java.io.BufferedOutputStream", outputStream.getClass().getName());
+
+        outputStream = homestake.setCompression("gzip-body", new ByteArrayOutputStream());
+        assertEquals("java.io.BufferedOutputStream", outputStream.getClass().getName());
     }
 
 }

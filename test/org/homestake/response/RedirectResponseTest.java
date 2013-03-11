@@ -15,7 +15,7 @@ public class RedirectResponseTest {
     @Test
     public void testResponse() throws IOException {
         redirectResponse = new RedirectResponse("/");
-        String response = specHelper.responseString(redirectResponse.response().get("default-header"));
+        String response = specHelper.responseString(redirectResponse.response().get("1-default-header"));
         assertTrue(response.contains("302 Found"));
         assertTrue(response.contains("Location:"));
     }

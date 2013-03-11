@@ -12,7 +12,7 @@ public class RouterTest {
     Router router = new Router("public");
 
     public String responseHeader(String mockRequest) throws IOException {
-        return specHelper.responseString(router.routeRequest(mockRequest).get("default-header"));
+        return specHelper.responseString(router.routeRequest(mockRequest).get("1-default-header"));
     }
 
     @Test

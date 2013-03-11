@@ -20,7 +20,7 @@ public class QueryStringResponseTest {
 
     @Test
     public void testResponse() throws IOException {
-        String response = specHelper.responseString(queryStringResponse.response().get("default-body"));
+        String response = specHelper.responseString(queryStringResponse.response().get("2-default-body"));
         assertTrue(response.contains("pirate"));
         assertTrue(response.contains("pegleg"));
     }

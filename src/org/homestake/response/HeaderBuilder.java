@@ -15,6 +15,7 @@ public class HeaderBuilder {
         response += generateDate();
         response += generateServerHeader();
         response += generateContentType( (String) headerValues.get("content-type") );
+        response += generateContentEncoding( (String) headerValues.get("content-encoding") );
         response += generateContentLength( (Long) headerValues.get("content-length") );
         response += generateLocation( (String) headerValues.get("location") );
 
@@ -56,8 +57,25 @@ public class HeaderBuilder {
         return "Content-Type: " + contentType + newline;
     }
 
+    public String generateContentEncoding(String encodingType) {
+        if (encodingType == null) {
+            return "";
+        }
+        else if (encodingType.equals("gzip")) {
+            return "Content-Encoding: gzip" + newline;
+        }
+        else {
+            return "";
+        }
+    }
+
     public String generateContentLength(Long size) {
-        return "Content-length: " + Long.toString(size) + newline;
+        if (size == null) {
+            return "";
+        }
+        else {
+            return "Content-length: " + Long.toString(size) + newline;
+        }
     }
 
     public String generateLocation(String redirectLocation) {

@@ -4,6 +4,7 @@ import org.homestake.utils.FileChecker;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.Map;
 
 public class FileResponse extends ServerResponse {
     private String filePath;
@@ -12,13 +13,14 @@ public class FileResponse extends ServerResponse {
         this.filePath = rootDirectory + requestRoute;
     }
 
-    public HashMap<String, InputStream> response() throws IOException {
+    @Override
+    public Map<String, InputStream> response() throws IOException {
         try {
             body = new FileInputStream(filePath);
-            mappedResponse.put("default-body", body);
+            mappedResponse.put(bodyCompression, body);
 
             header = new ByteArrayInputStream(headerBuilder.build(headerValues()).getBytes());
-            mappedResponse.put("default-header", header);
+            mappedResponse.put(headerCompression, header);
 
             return mappedResponse;
         }

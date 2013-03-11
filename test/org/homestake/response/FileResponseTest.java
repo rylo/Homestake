@@ -12,7 +12,7 @@ public class FileResponseTest {
     @Test
     public void testNotFoundResponse() throws IOException {
         FileResponse fileResponse = new FileResponse("public", "/asdfa;sdl0asdfa-d=f-23kjfansasdf");
-        String response = specHelper.responseString(fileResponse.response().get("default-header"));
+        String response = specHelper.responseString(fileResponse.response().get("1-default-header"));
 
         assertTrue(response.contains("404") && response.contains("Not Found"));
     }

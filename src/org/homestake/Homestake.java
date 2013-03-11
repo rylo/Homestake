@@ -4,9 +4,9 @@ import org.homestake.utils.Router;
 import org.homestake.utils.SocketWrapper;
 import java.io.*;
 import java.net.Socket;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.zip.GZIPOutputStream;
 
 public class Homestake {
     public static int port = 5000;
@@ -65,20 +65,22 @@ public class Homestake {
 
     }
 
-    public HashMap<String, InputStream> getServerResponse(Socket server) throws IOException {
+    public Map<String, InputStream> getServerResponse(Socket server) throws IOException {
         BufferedReader clientRequest = new BufferedReader(new InputStreamReader(server.getInputStream()));
         return new Router(rootDirectory).routeRequest(clientRequest.readLine());
     }
 
-    public void sendResponses(Socket server, HashMap<String, InputStream> response) throws IOException {
-        BufferedOutputStream outputStream = prepareOutputStream(server.getOutputStream());
+    public void sendResponses(Socket server, Map<String, InputStream> response) throws IOException {
+        OutputStream outputStream = null;
         for(Map.Entry<String, InputStream> entry : response.entrySet()) {
+            outputStream = setCompression(entry.getKey(), server.getOutputStream());
             writeResponseToSocket(server, outputStream, entry.getValue());
+            outputStream.flush();
         }
         outputStream.close();
     }
 
-    public void writeResponseToSocket(Socket server, BufferedOutputStream out, InputStream in) throws IOException {
+    public void writeResponseToSocket(Socket server, OutputStream out, InputStream in) throws IOException {
         BufferedInputStream bufferedInputStream = new BufferedInputStream(in);
         int line;
         while((line = bufferedInputStream.read()) != -1 && !server.isClosed()) {
@@ -91,8 +93,13 @@ public class Homestake {
         }
     }
 
-    public BufferedOutputStream prepareOutputStream(OutputStream serverOutputStream) {
-        return new BufferedOutputStream(serverOutputStream);
+    public OutputStream setCompression(String compressionType, OutputStream serverOutputStream) throws IOException {
+        if (compressionType.contains("gzip")) {
+            return new BufferedOutputStream(new GZIPOutputStream(serverOutputStream));
+        }
+        else {
+            return new BufferedOutputStream(serverOutputStream);
+        }
     }
 
     public Set getThreads() {

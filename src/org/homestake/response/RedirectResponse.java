@@ -7,7 +7,7 @@ public class RedirectResponse extends ServerResponse {
 
     public RedirectResponse(String redirectPath) {
         this.redirectPath = redirectPath;
-        setResponseBody("");
+        setResponseBody("o hi");
     }
 
     @Override

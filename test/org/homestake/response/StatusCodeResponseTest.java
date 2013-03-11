@@ -14,10 +14,10 @@ public class StatusCodeResponseTest {
     @Test
     public void testResponseContents() throws IOException {
         statusCodeResponse = new StatusCodeResponse(400);
-        assertTrue((specHelper.responseString(statusCodeResponse.response().get("default-header"))).contains("400"));
+        assertTrue((specHelper.responseString(statusCodeResponse.response().get("1-default-header"))).contains("400"));
 
         statusCodeResponse = new StatusCodeResponse(500);
-        assertTrue((specHelper.responseString(statusCodeResponse.response().get("default-header"))).contains("500"));
+        assertTrue((specHelper.responseString(statusCodeResponse.response().get("1-default-header"))).contains("500"));
     }
 
     @Test

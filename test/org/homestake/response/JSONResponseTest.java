@@ -7,16 +7,22 @@ import java.io.IOException;
 import java.util.HashMap;
 
 public class JSONResponseTest {
+    String responseBody = "{\"json\" : \"true\"}";
+    JSONResponse jsonResponse = new JSONResponse(responseBody);
+    HashMap<String, Object> headers = jsonResponse.headerValues();
 
     @Test
     public void testHeaderValues() throws IOException {
-        String responseBody = "{\"json\" : \"true\"}";
-        JSONResponse jsonResponse = new JSONResponse(responseBody);
-        HashMap<String, Object> headers = jsonResponse.headerValues();
-
         assertEquals(200, headers.get("status"));
-        assertEquals("application/json", headers.get("content-type"));
-        assertEquals(responseBody.length(), headers.get("content-length"));
+        assertEquals("application/json; charset=utf-8", headers.get("content-type"));
+        assertEquals("gzip", headers.get("content-encoding"));
+        assertEquals(null, headers.get("content-length"));
+    }
+
+    @Test
+    public void testGZIPBodyCompression() throws IOException {
+        assertNotNull(jsonResponse.response().get("gzip-body"));
+        assertNull(jsonResponse.response().get("default-body"));
     }
 
 }
