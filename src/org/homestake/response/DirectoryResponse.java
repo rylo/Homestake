@@ -36,11 +36,11 @@ public class DirectoryResponse extends ServerResponse {
 
     @Override
     public HashMap<String, Object> headerValues() {
-        HashMap<String, Object> hash = new HashMap<String, Object>();
-            hash.put("status", 200);
-            hash.put("content-type", "text/html");
-            hash.put("content-length", new Long(responseBody.length()));
-        return hash;
+        HashMap<String, Object> headers = new HashMap<String, Object>();
+            headers.put("status", 200);
+            headers.put("content-type", "text/html");
+            headers.put("content-length", new Long(responseBody.length()));
+        return headers;
     }
 
 }

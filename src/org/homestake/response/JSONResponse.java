@@ -11,10 +11,10 @@ public class JSONResponse extends ServerResponse {
 
     @Override
     public HashMap<String, Object> headerValues() {
-        HashMap<String, Object> hash = new HashMap<String, Object>();
-            hash.put("status", 200);
-            hash.put("content-type", "application/json; charset=utf-8");
-            hash.put("content-encoding", "gzip");
-        return hash;
+        HashMap<String, Object> headers = new HashMap<String, Object>();
+            headers.put("status", 200);
+            headers.put("content-type", "application/json; charset=utf-8");
+            headers.put("content-encoding", "gzip");
+        return headers;
     }
 }

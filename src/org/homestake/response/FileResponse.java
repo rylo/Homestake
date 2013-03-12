@@ -37,11 +37,11 @@ public class FileResponse extends ServerResponse {
     public HashMap<String, Object> headerValues() throws IOException {
         FileChecker fileChecker = new FileChecker("public");
 
-        HashMap<String, Object> hash = new HashMap<String, Object>();
-            hash.put("status", 200);
-            hash.put("content-type", fileChecker.generateFileMimeType(filePath));
-            hash.put("content-length", new File(filePath).length());
-        return hash;
+        HashMap<String, Object> headers = new HashMap<String, Object>();
+            headers.put("status", 200);
+            headers.put("content-type", fileChecker.generateFileMimeType(filePath));
+            headers.put("content-length", new File(filePath).length());
+        return headers;
     }
 
 }

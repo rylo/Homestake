@@ -7,15 +7,15 @@ public class RedirectResponse extends ServerResponse {
 
     public RedirectResponse(String redirectPath) {
         this.redirectPath = redirectPath;
-        setResponseBody("o hi");
+        setResponseBody("");
     }
 
     @Override
     public HashMap<String, Object> headerValues() {
-        HashMap<String, Object> hash = new HashMap<String, Object>();
-            hash.put("status", 302);
-            hash.put("content-length", new Long(responseBody.length()));
-            hash.put("location", redirectPath);
-        return hash;
+        HashMap<String, Object> headers = new HashMap<String, Object>();
+            headers.put("status", 302);
+            headers.put("content-length", new Long(responseBody.length()));
+            headers.put("location", redirectPath);
+        return headers;
     }
 }
