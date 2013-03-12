@@ -5,7 +5,7 @@ import java.util.HashMap;
 public class JSONResponse extends ServerResponse {
 
     public JSONResponse(String responseBody) {
-        setBodyCompression("gzip-body");
+        setBodyCompression("2-gzip-body");
         setResponseBody(responseBody);
     }
 

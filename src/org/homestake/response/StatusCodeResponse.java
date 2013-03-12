@@ -7,7 +7,7 @@ public class StatusCodeResponse extends ServerResponse {
 
     public StatusCodeResponse(int code) {
         this.code = code;
-        setResponseBody(HTMLWrap("<h1>Error code: " + Integer.toString(code) + "</h1>"));
+        setResponseBody(HTMLWrap("<h1>Status code: " + Integer.toString(code) + "</h1>"));
     }
 
     @Override
