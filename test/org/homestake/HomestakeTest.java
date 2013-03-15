@@ -76,7 +76,7 @@ public class HomestakeTest {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                homestake1.main(new String[]{"-p", portArgument, "-root", rootDirectoryArgument});
+                homestake1.main(new String[]{"-p", portArgument, "-d", rootDirectoryArgument});
             }
         }, "homestake-thread").start();
 

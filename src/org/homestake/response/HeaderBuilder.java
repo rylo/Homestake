@@ -58,10 +58,7 @@ public class HeaderBuilder {
     }
 
     public String generateContentEncoding(String encodingType) {
-        if (encodingType == null) {
-            return "";
-        }
-        else if (encodingType.equals("gzip")) {
+        if (encodingType != null && encodingType.equals("gzip")) {
             return "Content-Encoding: gzip" + newline;
         }
         else {

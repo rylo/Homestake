@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="homestake" default="all">
+  
+  
+  <property file="build.properties"/>
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="128m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/SCCS/**"/>
+    <exclude name="**/RCS/**"/>
+    <exclude name="**/rcs/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/.pyc/**"/>
+    <exclude name="**/.pyo/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/.hg/**"/>
+    <exclude name="**/*.lib/**"/>
+    <exclude name="**/*~/**"/>
+    <exclude name="**/__pycache__/**"/>
+    <exclude name="**/.bundle/**"/>
+    <exclude name="**/*.rbc/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.zip"/>
+    <include name="*.apk"/>
+    <include name="*.war"/>
+    <include name="*.egg"/>
+    <include name="*.ear"/>
+    <include name="*.ane"/>
+    <include name="*.swc"/>
+    <include name="*.jar"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <exclude name="**/?*.java"/>
+    <exclude name="**/?*.form"/>
+    <exclude name="**/?*.class"/>
+    <exclude name="**/?*.groovy"/>
+    <exclude name="**/?*.scala"/>
+    <exclude name="**/?*.flex"/>
+    <exclude name="**/?*.kt"/>
+    <exclude name="**/?*.clj"/>
+  </patternset>
+  
+  <!-- JDK definitions -->
+  
+  <property name="jdk.bin.1.6" value="${jdk.home.1.6}/bin"/>
+  <path id="jdk.classpath.1.6">
+    <fileset dir="${jdk.home.1.6}">
+      <include name="lib/deploy.jar"/>
+      <include name="lib/dt.jar"/>
+      <include name="lib/javaws.jar"/>
+      <include name="lib/jce.jar"/>
+      <include name="lib/jconsole.jar"/>
+      <include name="lib/management-agent.jar"/>
+      <include name="lib/plugin.jar"/>
+      <include name="lib/sa-jdi.jar"/>
+      <include name="../Classes/charsets.jar"/>
+      <include name="../Classes/classes.jar"/>
+      <include name="../Classes/jsse.jar"/>
+      <include name="../Classes/ui.jar"/>
+      <include name="lib/ext/apple_provider.jar"/>
+      <include name="lib/ext/dnsns.jar"/>
+      <include name="lib/ext/localedata.jar"/>
+      <include name="lib/ext/sunjce_provider.jar"/>
+      <include name="lib/ext/sunpkcs11.jar"/>
+    </fileset>
+  </path>
+  
+  <property name="project.jdk.home" value="${jdk.home.1.6}"/>
+  <property name="project.jdk.bin" value="${jdk.bin.1.6}"/>
+  <property name="project.jdk.classpath" value="jdk.classpath.1.6"/>
+  <!-- Register Custom Compiler Taskdefs -->
+  <property name="javac2.home" value="${idea.home}/lib"/>
+  <path id="javac2.classpath">
+    <pathelement location="${javac2.home}/javac2.jar"/>
+    <pathelement location="${javac2.home}/jdom.jar"/>
+    <pathelement location="${javac2.home}/asm4-all.jar"/>
+    <pathelement location="${javac2.home}/jgoodies-forms.jar"/>
+  </path>
+  <target name="register.custom.compilers">
+    <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
+    <taskdef name="instrumentIdeaExtensions" classname="com.intellij.ant.InstrumentIdeaExtensions" classpathref="javac2.classpath"/>
+  </target>
+  
+  <!-- Modules -->
+  
+  
+  <!-- Module Homestake -->
+  
+  <dirname property="module.homestake.basedir" file="${ant.file}"/>
+  
+  
+  <property name="module.jdk.home.homestake" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.homestake" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.homestake" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.homestake" value="${compiler.args}"/>
+  
+  <property name="homestake.output.dir" value="${module.homestake.basedir}/out/production/Homestake"/>
+  <property name="homestake.testoutput.dir" value="${module.homestake.basedir}/out/test/Homestake"/>
+  
+  <path id="homestake.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="homestake.module.production.classpath">
+    <path refid="${module.jdk.classpath.homestake}"/>
+    <pathelement location="${idea.home}/lib/junit-4.10.jar"/>
+  </path>
+  
+  <path id="homestake.runtime.production.module.classpath">
+    <pathelement location="${homestake.output.dir}"/>
+    <pathelement location="${idea.home}/lib/junit-4.10.jar"/>
+  </path>
+  
+  <path id="homestake.module.classpath">
+    <path refid="${module.jdk.classpath.homestake}"/>
+    <pathelement location="${homestake.output.dir}"/>
+    <pathelement location="${idea.home}/lib/junit-4.10.jar"/>
+  </path>
+  
+  <path id="homestake.runtime.module.classpath">
+    <pathelement location="${homestake.testoutput.dir}"/>
+    <pathelement location="${homestake.output.dir}"/>
+    <pathelement location="${idea.home}/lib/junit-4.10.jar"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.homestake">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.homestake">
+    <patternset refid="excluded.from.module.homestake"/>
+  </patternset>
+  
+  <path id="homestake.module.sourcepath">
+    <dirset dir="${module.homestake.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  <path id="homestake.module.test.sourcepath">
+    <dirset dir="${module.homestake.basedir}">
+      <include name="test"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.homestake" depends="compile.module.homestake.production,compile.module.homestake.tests" description="Compile module Homestake"/>
+  
+  <target name="compile.module.homestake.production" depends="register.custom.compilers" description="Compile module Homestake; production classes">
+    <mkdir dir="${homestake.output.dir}"/>
+    <javac2 destdir="${homestake.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.homestake}/javac">
+      <compilerarg line="${compiler.args.homestake}"/>
+      <bootclasspath refid="homestake.module.bootclasspath"/>
+      <classpath refid="homestake.module.production.classpath"/>
+      <src refid="homestake.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.homestake"/>
+    </javac2>
+    
+    <copy todir="${homestake.output.dir}">
+      <fileset dir="${module.homestake.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.homestake.tests" depends="register.custom.compilers,compile.module.homestake.production" description="compile module Homestake; test classes" unless="skip.tests">
+    <mkdir dir="${homestake.testoutput.dir}"/>
+    <javac2 destdir="${homestake.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.homestake}/javac">
+      <compilerarg line="${compiler.args.homestake}"/>
+      <bootclasspath refid="homestake.module.bootclasspath"/>
+      <classpath refid="homestake.module.classpath"/>
+      <src refid="homestake.module.test.sourcepath"/>
+      <patternset refid="excluded.from.compilation.homestake"/>
+    </javac2>
+    
+    <copy todir="${homestake.testoutput.dir}">
+      <fileset dir="${module.homestake.basedir}/test">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="clean.module.homestake" description="cleanup module">
+    <delete dir="${homestake.output.dir}"/>
+    <delete dir="${homestake.testoutput.dir}"/>
+  </target>
+  
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" depends="clean.module.homestake" description="cleanup all"/>
+  
+  <target name="build.modules" depends="init, clean, compile.module.homestake" description="build all modules"/>
+  
+  <target name="init.artifacts">
+    <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
+    <property name="artifact.output.homestake:jar" value="${basedir}/out/artifacts/Homestake_jar"/>
+    <mkdir dir="${artifacts.temp.dir}"/>
+    <property name="temp.jar.path.Homestake.jar" value="${artifacts.temp.dir}/Homestake.jar"/>
+  </target>
+  
+  <target name="artifact.homestake:jar" depends="init.artifacts, compile.module.homestake" description="Build &#39;Homestake:jar&#39; artifact">
+    <property name="artifact.temp.output.homestake:jar" value="${artifacts.temp.dir}/Homestake_jar"/>
+    <mkdir dir="${artifact.temp.output.homestake:jar}"/>
+    <jar destfile="${temp.jar.path.Homestake.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
+      <zipfileset dir="${homestake.output.dir}"/>
+    </jar>
+    <copy file="${temp.jar.path.Homestake.jar}" tofile="${artifact.temp.output.homestake:jar}/Homestake.jar"/>
+  </target>
+  
+  <target name="build.all.artifacts" depends="artifact.homestake:jar" description="Build all artifacts">
+    <mkdir dir="${artifact.output.homestake:jar}"/>
+    <copy todir="${artifact.output.homestake:jar}">
+      <fileset dir="${artifact.temp.output.homestake:jar}"/>
+    </copy>
+    
+    <!-- Delete temporary files -->
+    <delete dir="${artifacts.temp.dir}"/>
+  </target>
+  
+  <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
+</project>

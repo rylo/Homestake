@@ -56,7 +56,6 @@ public class HeaderBuilderTest {
         assertTrue(headerBuilder.build(requiredHeaders).contains("Server: HomestakeServer/0.01"));
         assertTrue(headerBuilder.build(requiredHeaders).contains("Content-Type: text/plain; charset=UTF-8"));
         assertTrue(headerBuilder.build(requiredHeaders).contains("Content-length: 2000"));
-
     }
 
     @Test

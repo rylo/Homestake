@@ -21,8 +21,8 @@ public class JSONResponseTest {
 
     @Test
     public void testGZIPBodyCompression() throws IOException {
-        assertNotNull(jsonResponse.response().get("gzip-body"));
-        assertNull(jsonResponse.response().get("default-body"));
+        assertNotNull(jsonResponse.response().get("2-gzip-body"));
+        assertNull(jsonResponse.response().get("2-default-body"));
     }
 
 }

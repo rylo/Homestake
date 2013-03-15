@@ -1,16 +1,20 @@
 package org.homestake;
 
+import org.homestake.utils.HomestakeThreadFactory;
 import org.homestake.utils.Router;
 import org.homestake.utils.SocketWrapper;
 import java.io.*;
 import java.net.Socket;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.zip.GZIPOutputStream;
 
 public class Homestake {
     public static int port = 5000;
     public static String rootDirectory = "public";
+    private ExecutorService threadPool = Executors.newFixedThreadPool(75, new HomestakeThreadFactory());
     private SocketWrapper socket;
 
     public Homestake() {
@@ -39,7 +43,7 @@ public class Homestake {
         int index = 0;
         for(String arg : args) {
             if (arg.equals("-p") || arg.equals("-port")) { port = Integer.parseInt(args[index + 1]); }
-            if (arg.equals("-root")) { rootDirectory = args[index + 1]; }
+            if (arg.equals("-d")) { rootDirectory = args[index + 1]; }
             index ++;
         }
     }
@@ -49,18 +53,17 @@ public class Homestake {
         while(true) {
             final Socket clientConnection = socket.accept();
 
-            new Thread(new Runnable() {
+            threadPool.execute(new Runnable() {
                 @Override
                 public void run() {
                     try {
                         sendResponses(clientConnection, getServerResponse(clientConnection));
                         clientConnection.close();
-                    }
-                    catch (Exception exception) {
+                    } catch (Exception exception) {
                         exception.printStackTrace();
                     }
                 }
-            }, "homestake-response-thread").start();
+            });
         }
 
     }
@@ -75,7 +78,12 @@ public class Homestake {
         for(Map.Entry<String, InputStream> entry : response.entrySet()) {
             outputStream = setCompression(entry.getKey(), server.getOutputStream());
             writeResponseToSocket(server, outputStream, entry.getValue());
-            outputStream.flush();
+            try {
+                outputStream.flush();
+            }
+            catch (Exception exception) {
+                break;
+            }
         }
         outputStream.close();
     }
