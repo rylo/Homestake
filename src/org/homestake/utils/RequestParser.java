@@ -1,29 +1,31 @@
 package org.homestake.utils;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.Hashtable;
 
 public class RequestParser {
     private String request;
+    public String route;
+    public String[] header;
+    public String rawRoute;
+    public String method;
 
     public RequestParser(String request) {
         this.request = request;
+        this.header = header();
+        this.rawRoute = rawRoute();
+        this.route = route();
+        this.method = method();
     }
 
     public String route() {
-        String route = rawRoute();
-        route = route.split("\\?")[0];
+        String route;
+        route = this.rawRoute.split("\\?")[0];
         if( hasTrailingSlash(route) || hasFileExtension(route)) {
             return route;
         }
         else {
             return route + "/";
         }
-    }
-
-    public String decode(String string) throws UnsupportedEncodingException {
-        return URLDecoder.decode(string, "UTF-8");
     }
 
     public boolean hasFileExtension(String filePath) {
@@ -36,7 +38,7 @@ public class RequestParser {
     }
 
     public String rawRoute() {
-        return header()[1];
+        return header[1];
     }
 
     public String[] header() {
@@ -45,13 +47,12 @@ public class RequestParser {
     }
 
     public String method() {
-        return header()[0];
+        return header[0];
     }
 
     public Hashtable queryStrings() {
         if (queryStringPresent()) {
-            String route = rawRoute();
-            String rawQueryStrings = route.split("\\?")[1];
+            String rawQueryStrings = rawRoute.split("\\?")[1];
             String[] queryStrings = rawQueryStrings.split("&");
 
             Hashtable<String, String> queryStringHash = new Hashtable<String, String>();
@@ -68,7 +69,7 @@ public class RequestParser {
     }
 
     public boolean queryStringPresent() {
-        return (rawRoute().split("\\?").length > 1);
+        return (rawRoute.split("\\?").length > 1);
     }
 
 }

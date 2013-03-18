@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public abstract class ServerResponse {
-    protected RequestParser requestParser = new RequestParser("");
+    protected RequestParser requestParser;
     protected HeaderBuilder headerBuilder;
     protected String responseBody;
     protected InputStream header;

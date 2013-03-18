@@ -9,10 +9,15 @@ import java.util.Map;
 
 public class Router {
     private String rootDirectory;
+    private Logger logger = new Logger();
     public Map<String, RegisteredRoute> routes = new HashMap<String, RegisteredRoute>();
 
-    public Router(String rootDirectory) throws Exception {
+    public Router(String rootDirectory) {
         this.rootDirectory = rootDirectory;
+        registerRoutes();
+    }
+
+    public void registerRoutes() {
         registerRoute("/some-script-url/", new QueryStringResponse());
         registerRoute("/form/", new QueryStringResponse());
         registerRoute("/redirect", new RedirectResponse("/"));
@@ -29,6 +34,11 @@ public class Router {
 
     public Map<String, InputStream> routeRequest(String requestString) throws Exception {
         RequestParser request = new RequestParser(requestString);
+
+//        Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at 2013-03-17 13:03:16 -0500
+//        Served asset /jquery.js - 304 Not Modified (0ms)
+
+        logger.writeMessage("Started " + request.method + " \"" + request.rawRoute + "\" for " + request.method);
 
         if (request.method().equals("GET") || request.method().equals("PUT")) {
             return getResponse(request);

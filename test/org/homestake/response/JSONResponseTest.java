@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 public class JSONResponseTest {
     String responseBody = "{\"json\" : \"true\"}";
-    RequestParser requestParser = new RequestParser("");
+    RequestParser requestParser = new RequestParser("GET /api/json HTTP/1.1\n...");
     JSONResponse jsonResponse = new JSONResponse(responseBody);
     HashMap<String, Object> headers = jsonResponse.headerValues();
 

@@ -1,5 +1,7 @@
 package org.homestake.response;
 
+import org.homestake.utils.Decoder;
+
 import java.io.*;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -14,7 +16,7 @@ public class QueryStringResponse extends ServerResponse {
             String key = queryStringEnumerator.nextElement();
             String value = queryStrings.get(key);
 
-            response += requestParser.decode(key) + " = " + requestParser.decode(value) + "\n";
+            response += Decoder.decode(key) + " = " + Decoder.decode(value) + "\n";
         }
         return response;
     }

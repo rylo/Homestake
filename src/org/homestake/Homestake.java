@@ -14,6 +14,7 @@ import java.util.zip.GZIPOutputStream;
 public class Homestake {
     public static int port = 5000;
     public static String rootDirectory = "public";
+    private Router router = new Router(rootDirectory);
     private ExecutorService threadPool = Executors.newFixedThreadPool(75, new HomestakeThreadFactory());
     private SocketWrapper socket;
 
@@ -72,7 +73,7 @@ public class Homestake {
         BufferedReader clientRequest = new BufferedReader(new InputStreamReader(server.getInputStream()));
         String request = clientRequest.readLine();
         if (request != null) {
-            return new Router(rootDirectory).routeRequest(request);
+            return router.routeRequest(request);
         }
         else {
             return null;

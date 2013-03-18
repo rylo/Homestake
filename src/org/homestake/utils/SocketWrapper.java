@@ -1,7 +1,5 @@
 package org.homestake.utils;
 
-import org.homestake.utils.Logger;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -18,7 +16,7 @@ public class SocketWrapper {
             this.serverSocket = new ServerSocket(port);
         }
         catch(java.io.IOException exception) {
-            logger.printMessage("Socket initialization failed: "  + exception.getMessage() );
+            logger.writeMessage("Socket initialization failed: " + exception.getMessage());
         }
     }
 
@@ -29,7 +27,7 @@ public class SocketWrapper {
             this.serverSocket = new ServerSocket(port);
         }
         catch(java.io.IOException exception) {
-            logger.printMessage("Socket initialization failed: "  + exception.getMessage() );
+            logger.writeMessage("Socket initialization failed: "  + exception.getMessage() );
         }
     }
 
@@ -51,7 +49,7 @@ public class SocketWrapper {
         }
         catch(IOException exception) {
             close();
-            logger.printMessage("Socket accept failed: " + exception.getMessage());
+            logger.writeMessage("Socket accept failed: " + exception.getMessage());
         }
         return returnSocket;
     }
@@ -61,7 +59,7 @@ public class SocketWrapper {
             this.serverSocket.close();
         }
         catch(IOException exception) {
-            logger.printMessage("Socket close failed: " + exception.getMessage());
+            logger.writeMessage("Socket close failed: " + exception.getMessage());
         }
     }
 

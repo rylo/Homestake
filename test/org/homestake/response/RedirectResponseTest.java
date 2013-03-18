@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 public class RedirectResponseTest {
-    RequestParser requestParser = new RequestParser("");
+    RequestParser requestParser = new RequestParser("\"GET /redirect HTTP/1.1\\n...\"");
     SpecHelper specHelper = new SpecHelper();
     RedirectResponse redirectResponse;
 

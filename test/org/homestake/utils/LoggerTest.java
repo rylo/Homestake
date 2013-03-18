@@ -1,37 +1,31 @@
 package org.homestake.utils;
 
 import org.junit.*;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
+import java.io.*;
+import java.util.Scanner;
 
 import static junit.framework.Assert.assertEquals;
 
 public class LoggerTest {
-    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-    private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
+    Logger logger;
 
     @Before
-    public void setUpStreams() {
-        System.setOut(new PrintStream(outContent));
-        System.setErr(new PrintStream(errContent));
+    public void setup() {
+        logger = new Logger("test.log");
     }
 
     @After
-    public void cleanUpStreams() {
-        System.setOut(null);
-        System.setErr(null);
+    public void teardown() throws IOException {
+        logger.clear();
     }
 
     @Test
-    public void testLoggerConstructor() {
-        Logger logger = new Logger();
-        assertEquals("org.homestake.utils.Logger", logger.getClass().getName());
-    }
+    public void testPrintMessage() throws IOException {
+        String testMessage = "TEST";
+        logger.writeMessage(testMessage + "THIS SHOULD GET CLEARED");
+        logger.clear();
+        logger.writeMessage(testMessage);
 
-    @Test
-    public void testPrintMessage() {
-        Logger logger = new Logger();
-        logger.printMessage("TEST");
-        assertEquals("TEST\n", outContent.toString());
+        assertEquals(testMessage, new Scanner(new FileReader(logger.logFileName)).useDelimiter("\n").next());
     }
 }

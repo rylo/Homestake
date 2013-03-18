@@ -9,7 +9,7 @@ import static junit.framework.Assert.*;
 public class RequestParserTest {
     RequestParser requestParser;
     String request;
-    String route;
+    String genericRoute = "GET / HTTP/1.1\n...";
 
     @Test
     public void testRoute() {
@@ -80,7 +80,7 @@ public class RequestParserTest {
 
     @Test
     public void testHasTrailingSlash() {
-        requestParser = new RequestParser("");
+        requestParser = new RequestParser(genericRoute);
 
         assertTrue(requestParser.hasTrailingSlash("/rylan/"));
         assertFalse(requestParser.hasTrailingSlash("/index.html"));
@@ -88,7 +88,7 @@ public class RequestParserTest {
 
     @Test
     public void testHasFileExtension() {
-        requestParser = new RequestParser("");
+        requestParser = new RequestParser(genericRoute);
 
         assertFalse(requestParser.hasFileExtension("/rylan/"));
         assertTrue(requestParser.hasFileExtension("/index.html"));
