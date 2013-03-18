@@ -12,15 +12,11 @@ public class QueryStringResponseTest {
     SpecHelper specHelper = new SpecHelper();
     String request = "GET /some-script-url?pirate=pegleg&ninja=shuriken HTTP/1.1\nHost: localhost:5000\n...";
     RequestParser requestParser = new RequestParser(request);
-    QueryStringResponse queryStringResponse;
-
-    public QueryStringResponseTest() throws UnsupportedEncodingException {
-        queryStringResponse = new QueryStringResponse(requestParser);
-    }
+    QueryStringResponse queryStringResponse = new QueryStringResponse();
 
     @Test
-    public void testResponse() throws IOException {
-        String response = specHelper.responseString(queryStringResponse.response().get("2-default-body"));
+    public void testResponse() throws Exception {
+        String response = specHelper.responseString(queryStringResponse.response(requestParser).get("2-default-body"));
         assertTrue(response.contains("pirate"));
         assertTrue(response.contains("pegleg"));
     }

@@ -68,9 +68,15 @@ public class Homestake {
 
     }
 
-    public Map<String, InputStream> getServerResponse(Socket server) throws IOException {
+    public Map<String, InputStream> getServerResponse(Socket server) throws Exception {
         BufferedReader clientRequest = new BufferedReader(new InputStreamReader(server.getInputStream()));
-        return new Router(rootDirectory).routeRequest(clientRequest.readLine());
+        String request = clientRequest.readLine();
+        if (request != null) {
+            return new Router(rootDirectory).routeRequest(request);
+        }
+        else {
+            return null;
+        }
     }
 
     public void sendResponses(Socket server, Map<String, InputStream> response) throws IOException {

@@ -1,21 +1,12 @@
 package org.homestake.response;
 
-import org.homestake.SpecHelper;
 import static junit.framework.Assert.*;
+
 import org.junit.Test;
 import java.io.IOException;
 import java.util.HashMap;
 
 public class FileResponseTest {
-    private SpecHelper specHelper =  new SpecHelper();
-
-    @Test
-    public void testNotFoundResponse() throws IOException {
-        FileResponse fileResponse = new FileResponse("public", "/asdfa;sdl0asdfa-d=f-23kjfansasdf");
-        String response = specHelper.responseString(fileResponse.response().get("1-default-header"));
-
-        assertTrue(response.contains("404") && response.contains("Not Found"));
-    }
 
     @Test
     public void testHeaderValues() throws IOException {

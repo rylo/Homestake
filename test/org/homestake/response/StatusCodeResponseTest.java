@@ -2,22 +2,25 @@ package org.homestake.response;
 
 import org.homestake.SpecHelper;
 import static junit.framework.Assert.*;
+
+import org.homestake.utils.RequestParser;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.util.HashMap;
 
 public class StatusCodeResponseTest {
+    RequestParser requestParser = new RequestParser("");
     private SpecHelper specHelper = new SpecHelper();
     private StatusCodeResponse statusCodeResponse;
 
     @Test
-    public void testResponseContents() throws IOException {
+    public void testResponseContents() throws Exception {
         statusCodeResponse = new StatusCodeResponse(400);
-        assertTrue((specHelper.responseString(statusCodeResponse.response().get("1-default-header"))).contains("400"));
+        assertTrue((specHelper.responseString(statusCodeResponse.response(requestParser).get("1-default-header"))).contains("400"));
 
         statusCodeResponse = new StatusCodeResponse(500);
-        assertTrue((specHelper.responseString(statusCodeResponse.response().get("1-default-header"))).contains("500"));
+        assertTrue((specHelper.responseString(statusCodeResponse.response(requestParser).get("1-default-header"))).contains("500"));
     }
 
     @Test

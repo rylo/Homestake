@@ -48,13 +48,13 @@ public class HomestakeTest {
     }
 
     @Test
-    public void testGetServerResponse() throws IOException {
+    public void testGetServerResponse() throws Exception {
         String response = new SpecHelper().responseString(homestake.getServerResponse(mockSocket).get("2-default-body"));
         assertTrue(response.contains("<h1>O hi!</h1>\n"));
     }
 
     @Test
-    public void testSendResponse() throws IOException {
+    public void testSendResponse() throws Exception {
         homestake.sendResponses(mockSocket, homestake.getServerResponse(mockSocket));
         OutputStream outputStream = mockSocket.getOutputStream();
         assertTrue(outputStream.toString().contains("<h1>O hi!</h1>\n"));

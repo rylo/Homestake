@@ -1,6 +1,8 @@
 package org.homestake.response;
 
 import static junit.framework.Assert.*;
+
+import org.homestake.utils.RequestParser;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -8,6 +10,7 @@ import java.util.HashMap;
 
 public class JSONResponseTest {
     String responseBody = "{\"json\" : \"true\"}";
+    RequestParser requestParser = new RequestParser("");
     JSONResponse jsonResponse = new JSONResponse(responseBody);
     HashMap<String, Object> headers = jsonResponse.headerValues();
 
@@ -20,9 +23,9 @@ public class JSONResponseTest {
     }
 
     @Test
-    public void testGZIPBodyCompression() throws IOException {
-        assertNotNull(jsonResponse.response().get("2-gzip-body"));
-        assertNull(jsonResponse.response().get("2-default-body"));
+    public void testGZIPBodyCompression() throws Exception {
+        assertNotNull(jsonResponse.response(requestParser).get("2-gzip-body"));
+        assertNull(jsonResponse.response(requestParser).get("2-default-body"));
     }
 
 }

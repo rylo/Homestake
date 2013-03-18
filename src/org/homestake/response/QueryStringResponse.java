@@ -1,18 +1,11 @@
 package org.homestake.response;
 
-import org.homestake.utils.RequestParser;
 import java.io.*;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
 
 public class QueryStringResponse extends ServerResponse {
-    private RequestParser requestParser;
-
-    public QueryStringResponse(RequestParser requestParser) throws UnsupportedEncodingException {
-        this.requestParser = requestParser;
-        setResponseBody(queryStringPrinter(requestParser.queryStrings()));
-    }
 
     public String queryStringPrinter(Hashtable<String, String> queryStrings) throws UnsupportedEncodingException {
         Enumeration<String> queryStringEnumerator = queryStrings.keys();
@@ -24,6 +17,12 @@ public class QueryStringResponse extends ServerResponse {
             response += requestParser.decode(key) + " = " + requestParser.decode(value) + "\n";
         }
         return response;
+    }
+
+    @Override
+    public void setBody() throws Exception {
+        setResponseBody(queryStringPrinter(requestParser.queryStrings()));
+        this.body = new ByteArrayInputStream(responseBody.getBytes());
     }
 
     @Override

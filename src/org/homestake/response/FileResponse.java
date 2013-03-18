@@ -4,7 +4,6 @@ import org.homestake.utils.FileChecker;
 
 import java.io.*;
 import java.util.HashMap;
-import java.util.Map;
 
 public class FileResponse extends ServerResponse {
     private String filePath;
@@ -14,23 +13,8 @@ public class FileResponse extends ServerResponse {
     }
 
     @Override
-    public Map<String, InputStream> response() throws IOException {
-        try {
-            body = new FileInputStream(filePath);
-            mappedResponse.put(bodyCompression, body);
-
-            header = new ByteArrayInputStream(headerBuilder.build(headerValues()).getBytes());
-            mappedResponse.put(headerCompression, header);
-
-            return mappedResponse;
-        }
-        catch (FileNotFoundException exception) {
-            return new StatusCodeResponse(404).response();
-        }
-        catch (Exception exception) {
-            exception.printStackTrace();
-            return new StatusCodeResponse(500).response();
-        }
+    public void setBody() throws FileNotFoundException {
+        this.body = new FileInputStream(filePath);
     }
 
     @Override

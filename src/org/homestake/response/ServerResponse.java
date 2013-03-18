@@ -1,11 +1,14 @@
 package org.homestake.response;
 
+import org.homestake.utils.RequestParser;
+
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
 public abstract class ServerResponse {
+    protected RequestParser requestParser = new RequestParser("");
     protected HeaderBuilder headerBuilder;
     protected String responseBody;
     protected InputStream header;
@@ -18,14 +21,27 @@ public abstract class ServerResponse {
         this.headerBuilder = new HeaderBuilder();
     }
 
-    public Map<String, InputStream> response() throws IOException {
-        body = new ByteArrayInputStream(responseBody.getBytes());
-        header = new ByteArrayInputStream(headerBuilder.build(headerValues()).getBytes());
+    public Map<String, InputStream> response(RequestParser request) throws Exception {
+        setRequestParser(request);
+        setBody();
+        setHeader();
 
         mappedResponse.put(headerCompression, header);
         mappedResponse.put(bodyCompression, body);
 
         return mappedResponse;
+    }
+
+    public void setRequestParser(RequestParser requestParser) {
+        this.requestParser = requestParser;
+    }
+
+    public void setBody() throws Exception {
+        this.body = new ByteArrayInputStream(responseBody.getBytes());
+    }
+
+    public void setHeader() throws IOException {
+        this.header = new ByteArrayInputStream(headerBuilder.build(headerValues()).getBytes());
     }
 
     public void setResponseBody(String responseBody) {

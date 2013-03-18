@@ -1,6 +1,7 @@
 package org.homestake.response;
 
 import org.homestake.SpecHelper;
+import org.homestake.utils.RequestParser;
 import org.junit.Test;
 import static junit.framework.Assert.*;
 import static junit.framework.Assert.assertEquals;
@@ -9,13 +10,14 @@ import java.io.IOException;
 import java.util.HashMap;
 
 public class RedirectResponseTest {
+    RequestParser requestParser = new RequestParser("");
     SpecHelper specHelper = new SpecHelper();
     RedirectResponse redirectResponse;
 
     @Test
-    public void testResponse() throws IOException {
+    public void testResponse() throws Exception {
         redirectResponse = new RedirectResponse("/");
-        String response = specHelper.responseString(redirectResponse.response().get("1-default-header"));
+        String response = specHelper.responseString(redirectResponse.response(requestParser).get("1-default-header"));
         assertTrue(response.contains("302 Found"));
         assertTrue(response.contains("Location:"));
     }
