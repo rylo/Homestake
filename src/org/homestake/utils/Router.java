@@ -21,6 +21,7 @@ public class Router {
         registerRoute("/form/", new QueryStringResponse());
         registerRoute("/redirect", new RedirectResponse("/"));
         registerRoute("/api/json", new JSONResponse("{\n\"JSON\" : \"Rocks!\"\n}"));
+        registerRoute("/fun/", new FunResponse());
     }
 
     public void registerRoute(String route, ServerResponse response) {
