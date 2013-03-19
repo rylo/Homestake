@@ -1,8 +1,6 @@
 package org.homestake.utils;
 
 import org.homestake.MockServerSocket;
-import org.homestake.utils.Logger;
-import org.homestake.utils.SocketWrapper;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,12 +10,10 @@ import java.net.Socket;
 import static junit.framework.Assert.*;
 
 public class SocketWrapperTest {
-    public Logger logger;
     public MockServerSocket mockServerSocket;
 
     @Before
     public void initialize() throws IOException {
-        logger = new Logger();
         mockServerSocket = new MockServerSocket("Test");
     }
 
@@ -36,20 +32,20 @@ public class SocketWrapperTest {
 
     @Test
     public void testAccept() throws IOException {
-        SocketWrapper socketWrapper = new SocketWrapper(7473, logger, mockServerSocket);
+        SocketWrapper socketWrapper = new SocketWrapper(7473, mockServerSocket);
         Socket server = socketWrapper.accept();
         assertEquals("org.homestake.MockSocket", server.getClass().getName()); // This isn't testing much - figure out how to REALLY test a socket?
     }
 
     @Test
     public void returnsTrueWhenIsClosed() {
-        SocketWrapper socketWrapper = new SocketWrapper(7473, logger, mockServerSocket);
+        SocketWrapper socketWrapper = new SocketWrapper(7473, mockServerSocket);
         assertTrue(socketWrapper.isClosed());
     }
 
     @Test
     public void testClose() throws IOException {
-        SocketWrapper socketWrapper = new SocketWrapper(7473, logger, mockServerSocket);
+        SocketWrapper socketWrapper = new SocketWrapper(7473, mockServerSocket);
         Socket server = socketWrapper.accept();
         assertFalse(server.isClosed());
         server.close();
@@ -62,13 +58,11 @@ public class SocketWrapperTest {
         assertEquals(1234, socketWrapper.getLocalPort());
         socketWrapper.close();
 
-        SocketWrapper socketWrapper1 = new SocketWrapper(1234, logger);
-        assertSame(logger, socketWrapper1.logger);
+        SocketWrapper socketWrapper1 = new SocketWrapper(1234);
         assertEquals(1234, socketWrapper1.getLocalPort());
         socketWrapper.close();
 
-        SocketWrapper socketWrapper2 = new SocketWrapper(1234, logger, mockServerSocket);
-        assertSame(logger, socketWrapper2.logger);
+        SocketWrapper socketWrapper2 = new SocketWrapper(1234, mockServerSocket);
         assertEquals(1234, socketWrapper2.getLocalPort());
         assertSame(mockServerSocket, socketWrapper2.serverSocket);
         socketWrapper.close();
@@ -81,7 +75,7 @@ public class SocketWrapperTest {
 
     @Test
     public void serverAcceptsConnections() throws Exception {
-        SocketWrapper serverSocket = new SocketWrapper(9876, logger, mockServerSocket);
+        SocketWrapper serverSocket = new SocketWrapper(9876, mockServerSocket);
         Socket server = serverSocket.accept();
 
         assertFalse(server.isClosed());

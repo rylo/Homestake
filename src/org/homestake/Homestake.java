@@ -1,10 +1,13 @@
 package org.homestake;
 
-import org.homestake.utils.HomestakeThreadFactory;
-import org.homestake.utils.Router;
-import org.homestake.utils.SocketWrapper;
+import org.homestake.utils.*;
+
 import java.io.*;
 import java.net.Socket;
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
@@ -44,7 +47,7 @@ public class Homestake {
         int index = 0;
         for(String arg : args) {
             if (arg.equals("-p") || arg.equals("-port")) { port = Integer.parseInt(args[index + 1]); }
-            if (arg.equals("-d")) { rootDirectory = args[index + 1]; }
+            if (arg.equals("-d") || arg.equals("-directory")) { rootDirectory = args[index + 1]; }
             index ++;
         }
     }
@@ -58,9 +61,29 @@ public class Homestake {
                 @Override
                 public void run() {
                     try {
-                        sendResponses(clientConnection, getServerResponse(clientConnection));
+                        Long threadID = Thread.currentThread().getId();
+                        Logger.destroyQueue(threadID);
+                        Date startTime = new Date();
+
+                        BufferedReader clientInputStream = new BufferedReader(new InputStreamReader(clientConnection.getInputStream()));
+                        String requestString = clientInputStream.readLine();
+
+                        // Handle phantom null requests
+                        if ( requestString != null ) {
+                            RequestParser request = new RequestParser(requestString);
+                            sendResponses(clientConnection, getServerResponse(request));
+
+                            Logger.addToQueue(threadID,
+                                    "Started - " + request.method + " \"" + request.rawRoute + "\"" +
+                                            " for " + clientConnection.getInetAddress().toString().replace("/", "") +
+                                            " at " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ZZ").format(startTime) + "\n" +
+                                    "Finished in " + (new Date().getTime() - startTime.getTime()) + "ms");
+                            Logger.writeQueuedMessages(threadID);
+                        }
+
                         clientConnection.close();
-                    } catch (Exception exception) {
+                    }
+                    catch (Exception exception) {
                         exception.printStackTrace();
                     }
                 }
@@ -69,9 +92,7 @@ public class Homestake {
 
     }
 
-    public Map<String, InputStream> getServerResponse(Socket server) throws Exception {
-        BufferedReader clientRequest = new BufferedReader(new InputStreamReader(server.getInputStream()));
-        String request = clientRequest.readLine();
+    public Map<String, InputStream> getServerResponse(RequestParser request) throws Exception {
         if (request != null) {
             return router.routeRequest(request);
         }

@@ -9,7 +9,6 @@ import java.util.Map;
 
 public class Router {
     private String rootDirectory;
-    private Logger logger = new Logger();
     public Map<String, RegisteredRoute> routes = new HashMap<String, RegisteredRoute>();
 
     public Router(String rootDirectory) {
@@ -32,14 +31,7 @@ public class Router {
         return routes.containsKey(requestRoute);
     }
 
-    public Map<String, InputStream> routeRequest(String requestString) throws Exception {
-        RequestParser request = new RequestParser(requestString);
-
-//        Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at 2013-03-17 13:03:16 -0500
-//        Served asset /jquery.js - 304 Not Modified (0ms)
-
-        logger.writeMessage("Started " + request.method + " \"" + request.rawRoute + "\" for " + request.method);
-
+    public Map<String, InputStream> routeRequest(RequestParser request) throws Exception {
         if (request.method().equals("GET") || request.method().equals("PUT")) {
             return getResponse(request);
         }
@@ -52,7 +44,7 @@ public class Router {
     }
 
     public Map<String, InputStream> getResponse(RequestParser request) throws Exception {
-        String requestRoute = request.route();
+        String requestRoute = request.route;
         FileChecker fileChecker = new FileChecker(rootDirectory);
 
         if (hasRegisteredRoute(requestRoute)) {

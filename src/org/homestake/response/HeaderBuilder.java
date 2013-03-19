@@ -1,5 +1,7 @@
 package org.homestake.response;
 
+import org.homestake.utils.Logger;
+
 import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -11,7 +13,7 @@ public class HeaderBuilder {
 
     public String build(HashMap<String, Object> headerValues) throws IOException {
         String response = "";
-        response += generateStatus( (Integer) headerValues.get("status") );
+        Logger.addToQueue(Thread.currentThread().getId(), response += generateStatus( (Integer) headerValues.get("status") ));
         response += generateDate();
         response += generateServerHeader();
         response += generateContentType( (String) headerValues.get("content-type") );

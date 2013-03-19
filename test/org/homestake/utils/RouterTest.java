@@ -21,7 +21,8 @@ public class RouterTest {
     }
 
     public String responseHeader(String mockRequest) throws Exception {
-        return specHelper.responseString(router.routeRequest(mockRequest).get("1-default-header"));
+        RequestParser request = new RequestParser(mockRequest);
+        return specHelper.responseString(router.routeRequest(request).get("1-default-header"));
     }
 
     @Test

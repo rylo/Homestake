@@ -1,6 +1,6 @@
 package org.homestake;
 
-import org.homestake.utils.Logger;
+import org.homestake.utils.RequestParser;
 import org.homestake.utils.SocketWrapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +16,7 @@ public class HomestakeTest {
     Homestake homestake;
     String mockRequest;
     MockSocket mockSocket;
+    RequestParser requestParser;
 
     public void waitForThreads(Homestake homestake, String threadName, int maxIterations) throws InterruptedException {
         int iterations = 0;
@@ -34,9 +35,9 @@ public class HomestakeTest {
     @Before
     public void initialize() throws IOException {
         mockRequest = "GET /rylan/index.html HTTP/1.1\n...";
-        Logger logger = new Logger();
+        requestParser = new RequestParser(mockRequest);
         mockServerSocket = new MockServerSocket(mockRequest);
-        socketWrapper = new SocketWrapper(5000, logger, mockServerSocket);
+        socketWrapper = new SocketWrapper(5000, mockServerSocket);
         homestake = new Homestake(socketWrapper);
         mockSocket = new MockSocket(mockRequest);
     }
@@ -49,13 +50,13 @@ public class HomestakeTest {
 
     @Test
     public void testGetServerResponse() throws Exception {
-        String response = new SpecHelper().responseString(homestake.getServerResponse(mockSocket).get("2-default-body"));
+        String response = new SpecHelper().responseString(homestake.getServerResponse(requestParser).get("2-default-body"));
         assertTrue(response.contains("<h1>O hi!</h1>\n"));
     }
 
     @Test
     public void testSendResponse() throws Exception {
-        homestake.sendResponses(mockSocket, homestake.getServerResponse(mockSocket));
+        homestake.sendResponses(mockSocket, homestake.getServerResponse(requestParser));
         OutputStream outputStream = mockSocket.getOutputStream();
         assertTrue(outputStream.toString().contains("<h1>O hi!</h1>\n"));
     }

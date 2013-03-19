@@ -8,7 +8,6 @@ public class SocketWrapper {
     public int port;
     private boolean closed = true;
     public ServerSocket serverSocket;
-    public Logger logger = new Logger();
 
     public SocketWrapper(int port) {
         this.port = port;
@@ -16,25 +15,13 @@ public class SocketWrapper {
             this.serverSocket = new ServerSocket(port);
         }
         catch(java.io.IOException exception) {
-            logger.writeMessage("Socket initialization failed: " + exception.getMessage());
+            System.out.println("Socket initialization failed: " + exception.getMessage());
         }
     }
 
-    public SocketWrapper(int port, Logger logger) {
-        this.port = port;
-        this.logger = logger;
-        try {
-            this.serverSocket = new ServerSocket(port);
-        }
-        catch(java.io.IOException exception) {
-            logger.writeMessage("Socket initialization failed: "  + exception.getMessage() );
-        }
-    }
-
-    public SocketWrapper(int port, Logger logger, ServerSocket serverSocket) {
+    public SocketWrapper(int port, ServerSocket serverSocket) {
         this.port = port;
         this.serverSocket = serverSocket;
-        this.logger = logger;
     }
 
     public boolean isClosed () {
@@ -49,7 +36,7 @@ public class SocketWrapper {
         }
         catch(IOException exception) {
             close();
-            logger.writeMessage("Socket accept failed: " + exception.getMessage());
+            System.out.println("Socket accept failed: " + exception.getMessage());
         }
         return returnSocket;
     }
@@ -59,7 +46,7 @@ public class SocketWrapper {
             this.serverSocket.close();
         }
         catch(IOException exception) {
-            logger.writeMessage("Socket close failed: " + exception.getMessage());
+            System.out.println("Socket close failed: " + exception.getMessage());
         }
     }
 
