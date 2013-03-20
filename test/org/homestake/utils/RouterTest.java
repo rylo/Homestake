@@ -1,5 +1,8 @@
 package org.homestake.utils;
 
+import org.homestake.Homestake;
+import org.homestake.MockServerSocket;
+import org.homestake.MockSocket;
 import org.homestake.SpecHelper;
 import org.homestake.response.FileResponse;
 import org.homestake.response.JSONResponse;
@@ -9,7 +12,9 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class RouterTest {
     SpecHelper specHelper = new SpecHelper();
@@ -44,7 +49,7 @@ public class RouterTest {
         mockRequest = "POST /asdfasdf HTTP/1.1\nHost: localhost:5000\n...";
         assertTrue(responseHeader(mockRequest).contains("200 OK"));
 
-        mockRequest = "GET /some-script-url?key=value HTTP/1.1\nHost: localhost:5000\n...";
+        mockRequest = "GET /parameters?key=value HTTP/1.1\nHost: localhost:5000\n...";
         assertTrue(responseHeader(mockRequest).contains("200 OK"));
 
         mockRequest = "GET /form HTTP/1.1\nHost: localhost:5000\n...";

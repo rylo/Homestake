@@ -1,17 +1,13 @@
 package org.homestake.utils;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
 public enum Logger {
     LOGGER;
 
-    public static String logDirectory = "log/";
-    public static String logFileName = logDirectory + "production.log";
+    public static String logFileName = createLogFile();
     public static PrintWriter logFile;
     public static Map<Long, StringBuilder> messageQueue = new HashMap<Long, StringBuilder>();
 
@@ -26,8 +22,16 @@ public enum Logger {
         }
     }
 
-    public static void setLogFile(String fileName) {
-        logFileName = logDirectory + fileName;
+    public static String createLogFile() {
+        String tempDirectory = System.getProperty("java.io.tmpdir");
+        File newLogFile = null;
+        try {
+            newLogFile = new File(tempDirectory + "production.log");
+        }
+        catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return newLogFile.getPath();
     }
 
     public static void clearFile() throws IOException {

@@ -66,20 +66,15 @@ public class Homestake {
                         Date startTime = new Date();
 
                         BufferedReader clientInputStream = new BufferedReader(new InputStreamReader(clientConnection.getInputStream()));
-                        String requestString = clientInputStream.readLine();
+                        RequestParser request = new RequestParser(clientInputStream);
+                        sendResponses(clientConnection, getServerResponse(request));
 
-                        // Handle phantom null requests
-                        if ( requestString != null ) {
-                            RequestParser request = new RequestParser(requestString);
-                            sendResponses(clientConnection, getServerResponse(request));
-
-                            Logger.addToQueue(threadID,
-                                    "Started - " + request.method + " \"" + request.rawRoute + "\"" +
-                                            " for " + clientConnection.getInetAddress().toString().replace("/", "") +
-                                            " at " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ZZ").format(startTime) + "\n" +
-                                    "Finished in " + (new Date().getTime() - startTime.getTime()) + "ms");
-                            Logger.writeQueuedMessages(threadID);
-                        }
+                        Logger.addToQueue(threadID,
+                                "Started - " + request.method + " \"" + request.rawRoute + "\"" +
+                                        " for " + clientConnection.getInetAddress().toString().replace("/", "") +
+                                        " at " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ZZ").format(startTime) + "\n" +
+                                "Finished in " + (new Date().getTime() - startTime.getTime()) + "ms");
+                        Logger.writeQueuedMessages(threadID);
 
                         clientConnection.close();
                     }

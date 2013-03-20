@@ -17,10 +17,10 @@ public class Router {
     }
 
     public void registerRoutes() {
-        registerRoute("/some-script-url/", new QueryStringResponse());
+        registerRoute("/parameters/", new QueryStringResponse());
         registerRoute("/form/", new QueryStringResponse());
-        registerRoute("/redirect", new RedirectResponse("/"));
-        registerRoute("/api/json", new JSONResponse("{\n\"JSON\" : \"Rocks!\"\n}"));
+        registerRoute("/redirect/", new RedirectResponse("/"));
+        registerRoute("/api/json/", new JSONResponse("{\n\"JSON\" : \"Rocks!\"\n}"));
         registerRoute("/fun/", new FunResponse());
     }
 

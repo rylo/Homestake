@@ -5,13 +5,13 @@ import java.io.*;
 import java.util.Scanner;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
 
 public class LoggerTest {
     Long threadID = Long.valueOf(1);
 
     @Before
-    public void setup() {
-        Logger.setLogFile("test.log");
+    public void setup() throws IOException {
         Logger.newQueue(threadID);
         assertEquals("", Logger.getQueue(threadID).toString());
     }
@@ -20,6 +20,18 @@ public class LoggerTest {
     public void teardown() throws IOException {
         Logger.clearFile();
         assertEquals(false, new Scanner(new FileReader(Logger.logFileName)).hasNext());
+    }
+
+    @Test
+    public void createLogFile() throws IOException {
+        String logFileLocation = Logger.createLogFile();
+        assertTrue(logFileLocation.contains("production"));
+        assertTrue(new File(logFileLocation).exists());
+    }
+
+    @Test
+    public void createLogFileDirectory() {
+//        Logger.createLogFileDirectory();
     }
 
     @Test

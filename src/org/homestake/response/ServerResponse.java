@@ -21,6 +21,11 @@ public abstract class ServerResponse {
         this.headerBuilder = new HeaderBuilder();
     }
 
+    protected ServerResponse(String responseBody) {
+        setResponseBody(responseBody);
+        this.headerBuilder = new HeaderBuilder();
+    }
+
     public Map<String, InputStream> response(RequestParser request) throws Exception {
         setRequestParser(request);
         setBody();

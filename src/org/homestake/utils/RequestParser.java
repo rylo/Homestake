@@ -1,16 +1,26 @@
 package org.homestake.utils;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.Hashtable;
 
 public class RequestParser {
-    private String request;
+    public String fullRequest;
     public String route;
     public String[] header;
     public String rawRoute;
     public String method;
 
     public RequestParser(String request) {
-        this.request = request;
+        this.fullRequest = request;
+        this.header = header();
+        this.rawRoute = rawRoute();
+        this.route = route();
+        this.method = method();
+    }
+
+    public RequestParser(BufferedReader clientInputStream) throws IOException {
+        this.fullRequest = stringifyRequest(clientInputStream);
         this.header = header();
         this.rawRoute = rawRoute();
         this.route = route();
@@ -28,6 +38,17 @@ public class RequestParser {
         }
     }
 
+    private String stringifyRequest(BufferedReader inputStream) throws IOException {
+        StringBuilder request = new StringBuilder();
+        String line;
+
+        while( (line = inputStream.readLine()) != null ) {
+            request.append(line);
+            if (line.equals("")) break;
+        }
+        return request.toString();
+    }
+
     public boolean hasFileExtension(String filePath) {
         int charactersAfterPeriod = (filePath.length() - 1) - filePath.lastIndexOf(".");
         return charactersAfterPeriod >= 2 && charactersAfterPeriod <= 4;
@@ -42,7 +63,7 @@ public class RequestParser {
     }
 
     public String[] header() {
-        String lines[] = request.split("\\r?\\n");
+        String lines[] = fullRequest.split("\\r?\\n");
         return lines[0].split(" ");
     }
 
