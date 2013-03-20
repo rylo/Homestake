@@ -12,7 +12,7 @@ import static junit.framework.Assert.assertNotSame;
 import static junit.framework.Assert.assertTrue;
 
 public class FunResponseTest {
-    String request = "GET /fun/?dirty=lol HTTP/1.1\n";
+    String request = "GET /fun/?sentence=lol HTTP/1.1\n";
     RequestParser parsedRequest = new RequestParser(request);
     FunResponse response = new FunResponse();
     HashMap<String, Object> headers;
@@ -26,15 +26,7 @@ public class FunResponseTest {
 
     @Test
     public void getQueryString() {
-        assertEquals("lol", response.getQueryString("dirty"));
-    }
-
-    @Test
-    public void dirtyWords() {
-        ArrayList<String> wordList = response.dirtyWords();
-        assertTrue(wordList.contains("shit"));
-        assertTrue(wordList.contains("fuck"));
-        assertTrue(wordList.contains("ass"));
+        assertEquals("lol", response.getQueryString("sentence"));
     }
 
     @Test
@@ -47,9 +39,8 @@ public class FunResponseTest {
 
     @Test
     public void cleansUpLanguage() {
-        assertNotSame("shit", response.cleanUp("shit"));
-        assertNotSame("fuck", response.cleanUp("fuck"));
-        assertNotSame("ass", response.cleanUp("ass"));
+        assertNotSame("shiz", response.cleanUp("shiz"));
+        assertNotSame("duck", response.cleanUp("duck"));
     }
 
     @Test

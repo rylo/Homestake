@@ -10,7 +10,10 @@ public class FunResponse extends ServerResponse {
 
     @Override
     public void setBody() throws Exception {
-        setResponseBody("<form action='/fun/'>Clean up my language: <input type='text' name='dirty'></form><h1>" + cleanUp(Decoder.decode(getQueryString("dirty"))) + "</h1>");
+        String cleanedUpSentence = "";
+        if (getQueryString("sentence") != null) cleanedUpSentence = cleanUp(Decoder.decode(getQueryString("sentence")));
+
+        setResponseBody("<form action='/fun/'>Clean up my language: <input type='text' name='sentence'></form><h1>" + cleanedUpSentence + "</h1>");
         this.body = new ByteArrayInputStream(responseBody.getBytes());
     }
 
@@ -24,18 +27,17 @@ public class FunResponse extends ServerResponse {
     }
 
     public String cleanUp(String dirtySentence) {
-        for (String word : dirtyWords()) {
-            dirtySentence = dirtySentence.replace(word, randomWord(cleanWords()));
-        }
-        return dirtySentence;
-    }
+        StringBuilder restoredSentence = new StringBuilder();
+        String[] choppedSentence = dirtySentence.split(" ");
 
-    public ArrayList<String> dirtyWords() {
-        ArrayList<String> wordList = new ArrayList<String>();
-            wordList.add("shit");
-            wordList.add("fuck");
-            wordList.add("ass");
-        return wordList;
+        for (String word : choppedSentence) {
+            if (word.length() == 4) {
+                restoredSentence.append(" " + randomWord(cleanWords()));
+            } else {
+                restoredSentence.append(" " + word);
+            }
+        }
+        return restoredSentence.toString();
     }
 
     public String randomWord(ArrayList<String> wordList) {
@@ -48,6 +50,10 @@ public class FunResponse extends ServerResponse {
             wordList.add("rainbow");
             wordList.add("butterfly");
             wordList.add("sparkle");
+            wordList.add("cupcake");
+            wordList.add("kitty");
+            wordList.add("gumdrop");
+            wordList.add("sunshine");
         return wordList;
     }
 
