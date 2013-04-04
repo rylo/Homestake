@@ -12,7 +12,6 @@ public class FunResponse extends ServerResponse {
     public void setBody() throws Exception {
         String cleanedUpSentence = "";
         if (getQueryString("sentence") != null) cleanedUpSentence = cleanUp(Decoder.decode(getQueryString("sentence")));
-
         setResponseBody("<form action='/fun/'>Clean up my language: <input type='text' name='sentence'></form><h1>" + cleanedUpSentence + "</h1>");
         this.body = new ByteArrayInputStream(responseBody.getBytes());
     }

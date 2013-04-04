@@ -13,7 +13,11 @@ public class HeaderBuilder {
 
     public String build(HashMap<String, Object> headerValues) throws IOException {
         String response = "";
-        Logger.addToQueue(Thread.currentThread().getId(), response += generateStatus( (Integer) headerValues.get("status") ));
+
+        Logger.addToQueue(Thread.currentThread().getId(),
+          response += generateStatus( (Integer) headerValues.get("status")
+        ));
+
         response += generateDate();
         response += generateServerHeader();
         response += generateContentType( (String) headerValues.get("content-type") );

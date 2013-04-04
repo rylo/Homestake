@@ -15,6 +15,11 @@ public class JSONResponseTest {
     HashMap<String, Object> headers = jsonResponse.headerValues();
 
     @Test
+    public void testConstructors() {
+        assertNotNull(new JSONResponse());
+    }
+
+    @Test
     public void testHeaderValues() throws IOException {
         assertEquals(200, headers.get("status"));
         assertEquals("application/json; charset=utf-8", headers.get("content-type"));

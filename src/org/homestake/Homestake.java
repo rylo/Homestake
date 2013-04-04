@@ -1,11 +1,10 @@
 package org.homestake;
 
+import org.homestake.response.ServerResponse;
 import org.homestake.utils.*;
 
 import java.io.*;
 import java.net.Socket;
-import java.sql.Time;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -50,6 +49,10 @@ public class Homestake {
             if (arg.equals("-d") || arg.equals("-directory")) { rootDirectory = args[index + 1]; }
             index ++;
         }
+    }
+
+    public void registerRoute(String routeMatcher, ServerResponse serverResponse) {
+        router.registerRoute(routeMatcher, serverResponse);
     }
 
     public void startServer() throws IOException {

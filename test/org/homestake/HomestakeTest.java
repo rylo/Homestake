@@ -1,5 +1,6 @@
 package org.homestake;
 
+import org.homestake.response.FunResponse;
 import org.homestake.utils.RequestParser;
 import org.homestake.utils.SocketWrapper;
 import org.junit.Before;
@@ -46,6 +47,11 @@ public class HomestakeTest {
     public void testConstructors() {
         assertNotNull(new Homestake());
         assertNotNull(new Homestake(socketWrapper));
+    }
+
+    @Test
+    public void testRegisterRoute() {
+        homestake.registerRoute("lols", new FunResponse());
     }
 
     @Test

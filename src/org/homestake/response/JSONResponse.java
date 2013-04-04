@@ -9,6 +9,10 @@ public class JSONResponse extends ServerResponse {
         setResponseBody(responseBody);
     }
 
+    public JSONResponse() {
+        setBodyCompression("2-gzip-body");
+    }
+
     @Override
     public HashMap<String, Object> headerValues() {
         HashMap<String, Object> headers = new HashMap<String, Object>();

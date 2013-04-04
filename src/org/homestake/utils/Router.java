@@ -1,9 +1,7 @@
 package org.homestake.utils;
 
 import org.homestake.response.*;
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 

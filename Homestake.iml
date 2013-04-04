@@ -17,6 +17,8 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="tictactoe" level="project" />
+    <orderEntry type="library" name="tictactoe-clojure" level="project" />
   </component>
 </module>
 
